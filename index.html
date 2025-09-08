@@ -7,116 +7,51 @@
   <meta name="description" content="A tiny love site for Vlad — galleries, notes, and reasons he’s the best." />
   <style>
     :root{
-      --bg:#0f0f14; --card:#171722; --text:#f5f7ff; --muted:#a9b0c6;
-      --accent:#9b87f5; --accent-2:#58d5c9; --heart:#ff5d8f; --warning:#ffd36b;
+      --bg:#0f0f14; --card:#1c1224; --text:#f5f7ff; --muted:#a9b0c6;
+      --accent:#c084fc; --accent-2:#f97316; --heart:#ff5d8f; --warning:#ffd36b;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; background: radial-gradient(1200px 800px at 10% -10%, #1a1a27 0%, transparent 60%), radial-gradient(1200px 800px at 100% 10%, #151522 0%, transparent 60%), var(--bg); color:var(--text); overflow-x:hidden}
 
-    /* wider layout */
     .wrap{max-width:1300px; margin:0 auto; padding:0 28px}
 
-    /* Header */
     header{padding:84px 0 18px; text-align:center}
-    h1{font-size:clamp(40px,6.2vw,72px); line-height:1.05; margin:0 0 12px}
+    h1{font-size:clamp(40px,6.2vw,72px); line-height:1.05; margin:0 0 12px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
     .subtitle{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
 
-    /* CTA */
     .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:26px 0 10px}
-    .btn{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); color:var(--text); padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:600; letter-spacing:.2px; transition:transform .15s ease, border-color .15s ease}
-    .btn:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.15)}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:white; padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:600; letter-spacing:.2px; transition:transform .15s ease, opacity .15s ease}
+    .btn:hover{transform:translateY(-2px); opacity:0.9}
 
-    /* Grid */
     .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px}
-    .section-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px; min-height:180px; position:relative}
+    .section-card{background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px; min-height:180px; position:relative; cursor:pointer; overflow:hidden}
     .section-card h2{margin:0 0 8px; font-size:24px}
     .section-card p{margin:0 0 8px; color:var(--muted)}
-    .pill{font-size:12px; color:#0b1020; background:var(--warning); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block; margin-bottom:8px}
+    .pill{font-size:12px; color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent-2)); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block; margin-bottom:8px}
 
-    /* Details */
-    details{margin-top:8px}
-    details summary{cursor:pointer; list-style:none}
-    details summary::-webkit-details-marker{display:none}
-    .reasons{margin:10px 0 0; display:flex; flex-direction:column; gap:10px}
-    .reason{background:rgba(255,255,255,.04); padding:10px 12px; border-radius:12px; border:1px dashed rgba(255,255,255,.1)}
+    .count-pill{position:absolute; top:10px; right:12px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
 
-    /* Gallery */
-    .gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-top:10px}
-    .gallery img{width:100%; height:140px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08); cursor:pointer}
+    .reason-modal{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; z-index:100; overflow-y:auto; padding:40px 20px}
+    .reason-content{background:#1a1a27; border-radius:20px; max-width:900px; margin:0 auto; padding:30px; animation:fadeIn .3s ease}
+    .reason-content h2{margin-top:0; font-size:28px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+    .reason-gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-top:16px}
+    .reason-gallery img{width:100%; border-radius:12px; cursor:pointer}
+    .close-btn{margin-top:20px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:#fff; padding:10px 16px; border-radius:12px; cursor:pointer}
 
-    /* Lightbox */
-    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; place-items:center; z-index:60}
-    .lightbox img{max-width:92vw; max-height:84vh; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    @keyframes fadeIn{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
 
-    /* Footer */
-    footer{padding:30px 0 80px; text-align:center; color:var(--muted)}
-    .small{font-size:12px; color:var(--muted)}
-
-    /* Hearts */
-    .heart{position:fixed; font-size:16px; color:var(--heart); pointer-events:none; animation:float 1.6s ease-out forwards}
-    @keyframes float{0%{transform:translateY(0) scale(.9); opacity:1} 100%{transform:translateY(-80px) scale(1.3); opacity:0}}
-
-    a{color:var(--accent-2); text-decoration:none}
-    a:hover{text-decoration:underline}
-      /* Lockable cards */
-    .locked .lock-overlay{display:none; position:absolute; inset:0; 
-      /* fully opaque but not flat black: layered gradients + faint pattern */
-      background:
-        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
-        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
-      /* subtle diagonal hatch pattern */
-      background-image:
-        linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(315deg, rgba(255,255,255,0.03) 25%, rgba(0,0,0,0) 25%),
-        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
-        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
-      background-size:12px 12px,12px 12px,12px 12px,12px 12px, auto, auto;
-      background-position:0 0,6px 0,6px -6px,0px 6px, center, center;
-      border-radius:22px; border:1px solid rgba(255,255,255,.08); 
-      align-items:center; justify-content:center; padding:18px; text-align:center}
-    
-    .lock-overlay{display:none; position:absolute; inset:0; background:rgba(12,12,20,.72); backdrop-filter: blur(4px); border-radius:22px; border:1px solid rgba(255,255,255,.08); align-items:center; justify-content:center; padding:18px; text-align:center}
-    .lock-ui{display:flex; flex-direction:column; gap:10px; max-width:360px}
-    .lock-ui .label{font-weight:700}
-    .lock-ui input{background:#0e0e16; border:1px solid rgba(255,255,255,.12); color:var(--text); padding:10px 12px; border-radius:10px}
-    .lock-ui .row{display:flex; gap:8px}
-    .lock-ui .hint{color:var(--muted); font-size:12px}
-    .count-pill{position:absolute; top:10px; right:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
-      /* Intro */
     .intro{margin:10px 0 24px}
     .intro-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px}
     .intro-card h2{margin:0 0 8px}
     .collage{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-top:14px}
     .collage img{width:100%; height:120px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08); cursor:pointer}
 
-    /* Lockable cards */
-    .locked .lock-overlay{display:flex}
-    .lock-overlay{display:none; position:absolute; inset:0; 
-      /* fully opaque but not flat black: layered gradients + faint pattern */
-      background:
-        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
-        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
-      /* subtle diagonal hatch pattern */
-      background-image:
-        linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(315deg, rgba(255,255,255,0.03) 25%, rgba(0,0,0,0) 25%),
-        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
-        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
-      background-size:12px 12px,12px 12px,12px 12px,12px 12px, auto, auto;
-      background-position:0 0,6px 0,6px -6px,0px 6px, center, center;
-      border-radius:22px; border:1px solid rgba(255,255,255,.08); 
-      align-items:center; justify-content:center; padding:18px; text-align:center}
-    .lock-ui{display:flex; flex-direction:column; gap:10px; max-width:360px}
-    .lock-ui .label{font-weight:700}
-    .lock-ui input{background:#0e0e16; border:1px solid rgba(255,255,255,.12); color:var(--text); padding:10px 12px; border-radius:10px}
-    .lock-ui .row{display:flex; gap:8px}
-    .lock-ui .hint{color:var(--muted); font-size:12px}
-    .count-pill{position:absolute; top:10px; right:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
+    footer{padding:30px 0 80px; text-align:center; color:var(--muted)}
+    .small{font-size:12px; color:var(--muted)}
+
+    .heart{position:fixed; font-size:16px; color:var(--heart); pointer-events:none; animation:float 1.6s ease-out forwards}
+    @keyframes float{0%{transform:translateY(0) scale(.9); opacity:1} 100%{transform:translateY(-80px) scale(1.3); opacity:0}}
   </style>
 </head>
 <body>
@@ -138,279 +73,153 @@
       <p class="small">You have been awesome for <span id="dayCounter">X</span> days.</p>
     </header>
 
-    <!-- Intro block above the cards -->
     <section class="intro">
       <div class="intro-card">
         <h2 id="intro-title">Happy Birthday, Vlad! 🎉</h2>
         <p id="intro-text" class="subtitle">I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year). You can edit this text in the CONFIG below or right here.</p>
-        <div id="collage" class="collage" aria-label="mini collage">
-          <!-- Filled by JS from collageImages; click to enlarge in lightbox -->
-        </div>
+        <div id="collage" class="collage" aria-label="mini collage"></div>
       </div>
     </section>
 
-    <main class="grid" id="reasons-grid">
-      <!-- Cards are generated by JS from CONFIG.reasons -->
-    </main>
+    <main class="grid" id="reasons-grid"></main>
 
     <footer>
-      <p class="small">Made with ❤️ by <span id="yourName">Your Name</span>. <span class="small mono">OhMyVlad v2.0</span></p>
+      <p class="small">Made with ❤️ by <span id="yourName">Your Name</span>. <span class="small mono">OhMyVlad v3.0</span></p>
     </footer>
   </div>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox"><img alt="expanded" id="lightbox-img"/></div>
+  <div class="reason-modal" id="reason-modal">
+    <div class="reason-content">
+      <h2 id="modal-title"></h2>
+      <p id="modal-blurb"></p>
+      <div id="modal-notes"></div>
+      <div class="reason-gallery" id="modal-gallery"></div>
+      <button class="close-btn" id="closeModal">Close</button>
+    </div>
+  </div>
 
 <script>
-  // ----------------------
-  // CONFIG — edit these!
-  // ----------------------
-  const YOUR_NAME = "Olivia";                  // your name
-  const VLAD_BIRTHDATE = "1998-09-18";         // for the day counter (YYYY-MM-DD)
+  const YOUR_NAME = "Olivia";
+  const VLAD_BIRTHDATE = "1998-09-18";
 
-  // You define each reason here. For each card, you can set:
-  // id, tag, title, blurb, question, answer (plain) OR answerHash (SHA-256 hex),
-  // notes: [strings], gallery: ["assets/...jpg"].
-  // NOTE: Using plain 'answer' is simplest but visible in the page source.
-  // If you want to hide it, provide 'answerHash' instead (lowercase hex) and leave 'answer' empty.
   const CONFIG = {
     introTitle: "Happy Birthday, Vlad! 🎉",
-    introText: "I built this little website because… (edit this text in CONFIG.introText to say why he’s the best person ever, what you’re grateful for, and what you wish for him this year).",
-    collageImages: [
-      // e.g. "assets/collage_1.jpg", "assets/collage_2.jpg"
-    ],
+    introText: "I built this little website because… (edit this text in CONFIG.introText).",
+    collageImages: [],
     reasons: [
-      {
-        id: "supportive",
-        tag: "Because he’s the most supportive",
-        title: "Cheerleader-in-chief",
-        blurb: "From late-night pep talks to patient code reviews — thank you for always backing me.",
-        question: "What snack do I always ask for before an exam?",
-        answer: "kinder bueno",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "smartest",
-        tag: "Because he’s the smartest",
-        title: "Big brain, bigger heart",
-        blurb: "Brutal logic + gentle explanations. Somehow you make everything click.",
-        question: "Our inside joke variable name?",
-        answer: "foo",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "involved",
-        tag: "Because he’s the most involved",
-        title: "All-in — with me & friends",
-        blurb: "You show up. For my assignments, for your crew, for everything that matters.",
-        question: "Name one course you helped me ace.",
-        answer: "databases",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "movies",
-        tag: "Because he has the best movie taste",
-        title: "Our cinema club",
-        blurb: "Curated marathons, perfect snacks, and director trivia on tap.",
-        question: "Our favorite trilogy?",
-        answer: "before trilogy",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "food",
-        tag: "Because he opened a new gastronomic world",
-        title: "Head chef Vlad",
-        blurb: "Tasting menus at home, bold flavors, and a permanent reservation in my heart.",
-        question: "Signature dish at home?",
-        answer: "ramen",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "music",
-        tag: "Because he expanded my music taste",
-        title: "New sounds, new feelings",
-        blurb: "Artists I now love because of you. (And the kitchen dances.)",
-        question: "Name one artist I discovered because of you",
-        answer: "tame impala",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "snacks",
-        tag: "Because he buys my favorite snacks",
-        title: "Snack fairy",
-        blurb: "He knows the exact ones. (Emergency stash included.)",
-        question: "My top crisps flavor?",
-        answer: "paprika",
-        notes: [],
-        gallery: []
-      },
-      {
-        id: "flowers",
-        tag: "Because he keeps my home full of flowers",
-        title: "Bouquet timeline",
-        blurb: "A gallery of bouquets through the seasons.",
-        question: "What was the color of the first bouquet?",
-        answer: "yellow",
-        notes: [],
-        gallery: [ 
-                  "assets/flowers1.jpg",
-                  "assets/flowers2.jpg",
-                  "assets/flowers3.jpg",
-                  "assets/flowers4.jpg",
-                  "assets/flowers5.jpg",
-                  "assets/flowers6.jpg"]
-      },
-      {
-        id: "kiddo",
-        tag: "Because he was the cutest kid",
-        title: "Baby Vlad, forever protected",
-        blurb: "I want that curious, playful kid inside you to always feel safe, seen, and free to wonder.",
-        question: "Your childhood nickname?",
-        answer: "vladut",
-        notes: [],
-        gallery: []
-      }
+      {id:"supportive",tag:"Because he’s the most supportive",title:"Cheerleader-in-chief",blurb:"From late-night pep talks to patient code reviews.",question:"What snack do I always ask for before an exam?",answer:"kinder bueno",notes:[],gallery:[]},
+      {id:"smartest",tag:"Because he’s the smartest",title:"Big brain, bigger heart",blurb:"Brutal logic + gentle explanations.",question:"Our inside joke variable name?",answer:"foo",notes:[],gallery:[]},
+      {id:"involved",tag:"Because he’s the most involved",title:"All-in — with me & friends",blurb:"You show up.",question:"Name one course you helped me ace.",answer:"databases",notes:[],gallery:[]},
+      {id:"movies",tag:"Because he has the best movie taste",title:"Our cinema club",blurb:"Curated marathons, perfect snacks.",question:"Our favorite trilogy?",answer:"before trilogy",notes:[],gallery:[]},
+      {id:"food",tag:"Because he opened a new gastronomic world",title:"Head chef Vlad",blurb:"Tasting menus at home.",question:"Signature dish at home?",answer:"ramen",notes:[],gallery:[]},
+      {id:"music",tag:"Because he expanded my music taste",title:"New sounds, new feelings",blurb:"Artists I now love because of you.",question:"Name one artist I discovered because of you",answer:"tame impala",notes:[],gallery:[]},
+      {id:"snacks",tag:"Because he buys my favorite snacks",title:"Snack fairy",blurb:"He knows the exact ones.",question:"My top crisps flavor?",answer:"paprika",notes:[],gallery:[]},
+      {id:"flowers",tag:"Because he keeps my home full of flowers",title:"Bouquet timeline",blurb:"A gallery of bouquets.",question:"What was the color of the first bouquet?",answer:"yellow",notes:[],gallery:[ "assets/flowers1.jpg", "assets/flowers2.jpg","assets/flowers3.jpg","assets/flowers4.jpg","assets/flowers5.jpg"]},
+      {id:"kiddo",tag:"Because he was the cutest kid",title:"Baby Vlad, forever protected",blurb:"I want that curious, playful kid inside you.",question:"Your childhood nickname?",answer:"vladut",notes:[],gallery:[]}
     ]
   };
 
-  // ----------------------
-  // RUNTIME — generate numbered, lockable cards
-  // ----------------------
   document.getElementById('yourName').textContent = YOUR_NAME;
 
-  // Day counter since birth
-  function daysSince(dateStr){
-    const start = new Date(dateStr + 'T00:00:00');
-    const now = new Date();
-    const diff = Math.floor((now - start) / (1000*60*60*24));
-    return new Intl.NumberFormat().format(diff);
+  // Intro content + collage
+  const introTitleEl = document.getElementById('intro-title');
+  const introTextEl  = document.getElementById('intro-text');
+  if(introTitleEl) introTitleEl.textContent = CONFIG.introTitle || introTitleEl.textContent;
+  if(introTextEl)  introTextEl.textContent  = CONFIG.introText  || introTextEl.textContent;
+  const collageEl = document.getElementById('collage');
+  if(collageEl && Array.isArray(CONFIG.collageImages)){
+    CONFIG.collageImages.forEach(src=>{
+      const img = document.createElement('img');
+      img.src = src; img.alt = 'collage photo'; img.loading = 'lazy';
+      img.addEventListener('click', ()=> openLightbox(src));
+      collageEl.appendChild(img);
+    });
   }
+  function daysSince(dateStr){const start=new Date(dateStr+'T00:00:00');const now=new Date();const diff=Math.floor((now-start)/(1000*60*60*24));return new Intl.NumberFormat().format(diff);} 
   document.getElementById('dayCounter').textContent = daysSince(VLAD_BIRTHDATE);
 
-  // Build cards
-  const grid = document.getElementById('reasons-grid');
+  document.getElementById('intro-title').textContent = CONFIG.introTitle;
+  document.getElementById('intro-text').textContent = CONFIG.introText;
+  CONFIG.collageImages.forEach(src=> addImg(document.getElementById('collage'),src));
 
-  function createCard(reason, idx){
-    const card = document.createElement('section');
-    card.className = 'section-card locked';
-    card.id = reason.id;
+  const grid=document.getElementById('reasons-grid');
+  CONFIG.reasons.forEach((r,i)=> grid.appendChild(createCard(r,i)));
 
-    const pill = document.createElement('span');
-    pill.className = 'pill';
-    pill.textContent = reason.tag;
+  function createCard(reason,idx){
+    const card=document.createElement('section');
+    card.className='section-card'; card.id=reason.id;
+    card.innerHTML=`<span class="pill">${reason.tag}</span><span class="count-pill">Reason #${idx+1}</span><h2>${reason.title}</h2>`;
 
-    const count = document.createElement('span');
-    count.className = 'count-pill';
-    count.textContent = `Reason #${idx+1}`;
+    // overlay for question
+    const overlay=document.createElement('div');
+    overlay.className='lock-ui';
+    overlay.innerHTML=`<div class="label">Guess to unlock: <em>${reason.question}</em></div><div class="row"><input type="text" placeholder="your answer"/><button class="btn">Unlock</button></div><div class="hint small">(Not case sensitive)</div>`;
+    card.appendChild(overlay);
 
-    const h2 = document.createElement('h2');
-    h2.textContent = reason.title;
+    const btn=overlay.querySelector('button');
+    const input=overlay.querySelector('input');
+    btn.addEventListener('click',()=>check());
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')check()});
 
-    const p = document.createElement('p');
-    p.textContent = reason.blurb;
+    function check(){
+      const guess=(input.value||'').trim().toLowerCase();
+      if(guess===reason.answer.toLowerCase()){
+        openModal(reason);
+      } else {input.value=''; input.placeholder='try again ✨';}
+    }
 
-    // notes list
-    const detailsNotes = document.createElement('details');
-    const sumN = document.createElement('summary');
-    sumN.innerHTML = '<strong>Notes & tiny stories</strong>';
-    const notesWrap = document.createElement('div');
-    notesWrap.className = 'reasons';
-    notesWrap.id = `${reason.id}-notes`;
-    reason.notes.forEach(txt=>{
-      const d = document.createElement('div');
-      d.className = 'reason'; d.textContent = txt; notesWrap.appendChild(d);
-    });
-    detailsNotes.appendChild(sumN); detailsNotes.appendChild(notesWrap);
-
-    // gallery
-    const gal = document.createElement('div');
-    gal.className = 'gallery'; gal.id = `${reason.id}-gallery`;
-    reason.gallery.forEach(src=> addImg(gal, src));
-
-    // lock overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'lock-overlay';
-    overlay.innerHTML = `
-      <div class="lock-ui">
-        <div class="label">Guess to unlock: <em>${reason.question}</em></div>
-        <div class="row">
-          <input type="text" placeholder="your answer" aria-label="answer" />
-          <button class="btn">Unlock</button>
-        </div>
-        <div class="hint small">(Not case sensitive. Try an inside joke 😉)</div>
-      </div>`;
-
-    // unlock logic
-    const btn = overlay.querySelector('button');
-    const input = overlay.querySelector('input');
-    btn.addEventListener('click', async ()=>{
-      const guess = (input.value || '').trim().toLowerCase();
-      const okPlain = reason.answer && guess === reason.answer.trim().toLowerCase();
-      let okHash = false;
-      if(!okPlain && reason.answerHash){
-        const hex = await sha256Hex(guess);
-        okHash = hex === reason.answerHash.toLowerCase();
-      }
-      if(okPlain || okHash){
-        card.classList.remove('locked');
-        overlay.style.display = 'none';
-      } else {
-        input.value = '';
-        input.placeholder = 'try again ✨';
-      }
-    });
-    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') btn.click(); });
-
-    card.appendChild(pill); card.appendChild(count); card.appendChild(h2); card.appendChild(p); card.appendChild(detailsNotes); card.appendChild(gal); card.appendChild(overlay);
     return card;
   }
 
-  function addImg(container, src){
-    const img = document.createElement('img');
-    img.loading = 'lazy'; img.src = src; img.alt = 'photo';
-    img.addEventListener('click', ()=> openLightbox(src));
+  const modal=document.getElementById('reason-modal');
+  const modalTitle=document.getElementById('modal-title');
+  const modalBlurb=document.getElementById('modal-blurb');
+  const modalNotes=document.getElementById('modal-notes');
+  const modalGallery=document.getElementById('modal-gallery');
+  document.getElementById('closeModal').onclick=()=>modal.style.display='none';
+
+  function openModal(reason){
+    modalTitle.textContent=reason.title;
+    modalBlurb.textContent=reason.blurb;
+    modalNotes.innerHTML='';
+    reason.notes.forEach(n=>{const d=document.createElement('div');d.className='reason';d.textContent=n;modalNotes.appendChild(d)});
+    modalGallery.innerHTML='';
+    reason.gallery.forEach(src=> addImg(modalGallery,src));
+    modal.style.display='block';
+  }
+
+  function addImg(container,src){
+    const img=document.createElement('img'); img.src=src; img.alt='photo'; img.loading='lazy';
+    img.onclick=()=>{const lb=document.createElement('div');lb.className='lightbox';lb.innerHTML=`<img src="${src}"/>`;document.body.appendChild(lb);lb.onclick=()=>lb.remove();};
     container.appendChild(img);
   }
 
-  // Render all
-  CONFIG.reasons.forEach((r, i)=> grid.appendChild(createCard(r, i)));
+  function heartBurst(x,y){for(let i=0;i<6;i++){const h=document.createElement('div');h.className='heart';h.textContent='❤';h.style.left=(x+(Math.random()*40-20))+'px';h.style.top=(y+(Math.random()*20-10))+'px';h.style.transform=`translateY(0) scale(${0.8+Math.random()*0.6})`;document.body.appendChild(h);setTimeout(()=>h.remove(),1600);}}
+  document.addEventListener('click',e=>{if(!e.target.closest('.lightbox')&&!e.target.closest('.btn')&&!e.target.closest('input'))heartBurst(e.clientX,e.clientY)});
+  // Detail fullscreen modal
+  const detail = document.getElementById('detailModal');
+  const closeDetailBtn = document.getElementById('closeDetail');
+  const detailTitle = document.getElementById('detailTitle');
+  const detailBlurb = document.getElementById('detailBlurb');
+  const detailNotes = document.getElementById('detailNotes');
+  const detailGallery = document.getElementById('detailGallery');
 
-  // Lightbox
-  const lb = document.createElement('div');
-  lb.className = 'lightbox'; lb.id = 'lightbox';
-  lb.innerHTML = '<img alt="expanded" id="lightbox-img" />';
-  document.body.appendChild(lb);
-  const lbImg = lb.querySelector('#lightbox-img');
-  function openLightbox(src){ lbImg.src = src; lb.style.display='grid'; }
-  lb.addEventListener('click', ()=>{ lb.style.display='none'; lbImg.src=''; });
-
-  // Hearts (fun)
-  function heartBurst(x,y){
-    for(let i=0;i<6;i++){
-      const h = document.createElement('div');
-      h.className = 'heart'; h.textContent = '❤';
-      h.style.left = (x + (Math.random()*40-20)) + 'px';
-      h.style.top = (y + (Math.random()*20-10)) + 'px';
-      h.style.transform = `translateY(0) scale(${0.8 + Math.random()*0.6})`;
-      document.body.appendChild(h);
-      setTimeout(()=> h.remove(), 1600);
-    }
+  function clearChildren(el){ while(el && el.firstChild) el.removeChild(el.firstChild); }
+  function openDetail(reason, idx){
+    if(!detail) return;
+    detailTitle.textContent = `Reason #${idx+1} — ${reason.title}`;
+    detailBlurb.textContent = reason.blurb || '';
+    clearChildren(detailNotes); clearChildren(detailGallery);
+    (reason.notes||[]).forEach(txt=>{
+      const d = document.createElement('div'); d.className='reason'; d.textContent = txt; detailNotes.appendChild(d);
+    });
+    (reason.gallery||[]).forEach(src=>{
+      const img = document.createElement('img'); img.src = src; img.alt = 'photo'; img.loading='lazy'; img.addEventListener('click', ()=> openLightbox(src)); detailGallery.appendChild(img);
+    });
+    detail.style.display = 'grid';
   }
-  document.addEventListener('click',(e)=>{ if(!e.target.closest('.lightbox')) heartBurst(e.clientX,e.clientY); });
-
-  // Optional: SHA-256 helper (for hashed answers)
-  async function sha256Hex(text){
-    const enc = new TextEncoder().encode(text);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    const bytes = Array.from(new Uint8Array(buf));
-    return bytes.map(b=> b.toString(16).padStart(2,'0')).join('');
-  }
+  if(closeDetailBtn) closeDetailBtn.addEventListener('click', ()=>{ detail.style.display='none'; });
+  if(detail) detail.addEventListener('click', (e)=>{ if(e.target.id==='detailModal') detail.style.display='none'; });
 </script>
 </body>
 </html>
