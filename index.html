@@ -59,6 +59,15 @@
 
     a{color:var(--accent-2); text-decoration:none}
     a:hover{text-decoration:underline}
+      /* Lockable cards */
+    .locked .lock-overlay{display:flex}
+    .lock-overlay{display:none; position:absolute; inset:0; background:rgba(12,12,20,.72); backdrop-filter: blur(4px); border-radius:22px; border:1px solid rgba(255,255,255,.08); align-items:center; justify-content:center; padding:18px; text-align:center}
+    .lock-ui{display:flex; flex-direction:column; gap:10px; max-width:360px}
+    .lock-ui .label{font-weight:700}
+    .lock-ui input{background:#0e0e16; border:1px solid rgba(255,255,255,.12); color:var(--text); padding:10px 12px; border-radius:10px}
+    .lock-ui .row{display:flex; gap:8px}
+    .lock-ui .hint{color:var(--muted); font-size:12px}
+    .count-pill{position:absolute; top:10px; right:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
   </style>
 </head>
 <body>
@@ -80,104 +89,8 @@
       <p class="small">You have been awesome for <span id="dayCounter">X</span> days.</p>
     </header>
 
-    <main class="grid">
-      <!-- Supportive -->
-      <section class="section-card" id="supportive">
-        <span class="pill">Because he’s the most supportive</span>
-        <h2>Cheerleader-in-chief</h2>
-        <p>From late-night pep talks to patient code reviews — thank you for always backing me.</p>
-        <details>
-          <summary><strong>Notes & tiny stories</strong></summary>
-          <div class="reasons" id="supportive-notes"></div>
-        </details>
-        <details>
-          <summary><strong>Screenshots (texts / grades)</strong></summary>
-          <div class="gallery" id="supportive-gallery"></div>
-        </details>
-      </section>
-
-      <!-- Smartest -->
-      <section class="section-card" id="smartest">
-        <span class="pill">Because he’s the smartest</span>
-        <h2>Big brain, bigger heart</h2>
-        <p>Brutal logic + gentle explanations. Somehow you make everything click.</p>
-        <details>
-          <summary><strong>Proof / little wins</strong></summary>
-          <div class="reasons" id="smartest-notes"></div>
-        </details>
-      </section>
-
-      <!-- Involved -->
-      <section class="section-card" id="involved">
-        <span class="pill">Because he’s the most involved</span>
-        <h2>All-in — with me & friends</h2>
-        <p>You show up. For my assignments, for your crew, for everything that matters.</p>
-        <details>
-          <summary><strong>Stories & thanks</strong></summary>
-          <div class="reasons" id="involved-notes"></div>
-        </details>
-      </section>
-
-      <!-- Movies -->
-      <section class="section-card" id="movies">
-        <span class="pill">Because he has the best movie taste</span>
-        <h2>Our cinema club</h2>
-        <p>Curated marathons, perfect snacks, and director trivia on tap.</p>
-        <details>
-          <summary><strong>Watchlist / faves</strong></summary>
-          <div class="reasons" id="movies-notes"></div>
-        </details>
-      </section>
-
-      <!-- Food / Gastronomy -->
-      <section class="section-card" id="food">
-        <span class="pill">Because he opened a new gastronomic world</span>
-        <h2>Head chef Vlad</h2>
-        <p>Tasting menus at home, bold flavors, and a permanent reservation in my heart.</p>
-        <details>
-          <summary><strong>Photo bites</strong></summary>
-          <div class="gallery" id="food-gallery"></div>
-        </details>
-      </section>
-
-      <!-- Music expansion -->
-      <section class="section-card" id="music">
-        <span class="pill">Because he expanded my music taste</span>
-        <h2>New sounds, new feelings</h2>
-        <p>Artists I now love because of you. (And the kitchen dances.)</p>
-        <details>
-          <summary><strong>Songs from Vlad</strong></summary>
-          <div class="gallery" id="music-gallery"></div>
-        </details>
-        <div style="margin-top:10px">
-          <!-- Replace with your own Spotify collage/smart embed later if you want -->
-          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        </div>
-      </section>
-
-      <!-- Snack fairy -->
-      <section class="section-card" id="snacks">
-        <span class="pill">Because he buys my favorite snacks</span>
-        <h2>Snack fairy</h2>
-        <p>He knows the exact ones. (Emergency stash included.)</p>
-        <div class="gallery" id="snacks-gallery"></div>
-      </section>
-
-      <!-- Flowers -->
-      <section class="section-card" id="flowers">
-        <span class="pill">Because he keeps my home full of flowers</span>
-        <h2>Bouquet timeline</h2>
-        <p>A gallery of bouquets through the seasons.</p>
-        <div class="gallery" id="flowers-gallery"></div>
-      </section>
-
-      <!-- Baby Vlad -->
-      <section class="section-card" id="kiddo">
-        <span class="pill">Because he was the cutest kid</span>
-        <h2>Baby Vlad, forever protected</h2>
-        <p>I want that curious, playful kid inside you to always feel safe, seen, and free to wonder.</p>
-        <div class="gallery" id="kiddo-gallery"></div>
-      </section>
+    <main class="grid" id="reasons-grid">
+      <!-- Cards are generated by JS from CONFIG.reasons -->
     </main>
 
     <footer>
@@ -192,36 +105,115 @@
   // ----------------------
   // CONFIG — edit these!
   // ----------------------
-  const YOUR_NAME = "Olivia";                 // your name
-  const VLAD_BIRTHDATE = "1998-09-18";        // used for day counter (YYYY-MM-DD)
+  const YOUR_NAME = "Olivia";                  // your name
+  const VLAD_BIRTHDATE = "1998-09-18";         // for the day counter (YYYY-MM-DD)
 
-  // Text notes for various sections (add/remove strings)
-  const supportiveNotes = [
-    // e.g. "You stayed on call while I debugged the SQL mess.",
-  ];
-  const smartestNotes = [
-    // e.g. "Explained pointers to me with three metaphors 😂",
-  ];
-  const involvedNotes = [
-    // e.g. "Helped me prep the presentation for Prof. X (got a 10!)",
-  ];
-  const moviesNotes = [
-    // e.g. "Before Sunrise marathon + midnight tea",
-  ];
-
-  // Image galleries — put your files in /assets and list their paths here
-  // Example: "assets/flowers_2024_01.jpg"
-  const galleries = {
-    supportive: [ /* screenshots of texts/grades */ ],
-    food: [ /* food pics */ ],
-    music: [ /* album covers / song screenshots */ ],
-    snacks: [ /* favorite snack pics */ ],
-    flowers: [ /* bouquet pics */ ],
-    kiddo: [ /* baby photos */ ]
+  // You define each reason here. For each card, you can set:
+  // id, tag, title, blurb, question, answer (plain) OR answerHash (SHA-256 hex),
+  // notes: [strings], gallery: ["assets/...jpg"].
+  // NOTE: Using plain 'answer' is simplest but visible in the page source.
+  // If you want to hide it, provide 'answerHash' instead (lowercase hex) and leave 'answer' empty.
+  const CONFIG = {
+    reasons: [
+      {
+        id: "supportive",
+        tag: "Because he’s the most supportive",
+        title: "Cheerleader-in-chief",
+        blurb: "From late-night pep talks to patient code reviews — thank you for always backing me.",
+        question: "What snack do I always ask for before an exam?",
+        answer: "kinder bueno", // case-insensitive match
+        notes: [
+          // "You stayed on call while I finished my assignment.",
+        ],
+        gallery: [
+          // "assets/grade_10.png",
+        ]
+      },
+      {
+        id: "smartest",
+        tag: "Because he’s the smartest",
+        title: "Big brain, bigger heart",
+        blurb: "Brutal logic + gentle explanations. Somehow you make everything click.",
+        question: "What tool did you have to learn just to help me with work back in 2023? ",
+        answer: "PowerBI", // example
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "involved",
+        tag: "Because he’s the most involved",
+        title: "All-in — with me & friends",
+        blurb: "You show up. For my assignments, for your crew, for everything that matters.",
+        question: "Name one course you helped me ace.",
+        answer: "DeepLearning",
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "movies",
+        tag: "Because he has the best movie taste",
+        title: "Our cinema club",
+        blurb: "Curated marathons, perfect snacks, and director trivia on tap.",
+        question: "What ",
+        answer: "before trilogy",
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "food",
+        tag: "Because he opened a new gastronomic world",
+        title: "Head chef Vlad",
+        blurb: "Tasting menus at home, bold flavors, and a permanent reservation in my heart.",
+        question: "What was the first meal you cooked for me",
+        answer: "somon",
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "music",
+        tag: "Because he expanded my music taste",
+        title: "New sounds, new feelings",
+        blurb: "Artists I now love because of you. (And the kitchen dances.)",
+        question: "Who is my favourite artist now that you introduced me to?",
+        answer: "Ruby Waters",
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "snacks",
+        tag: "Because he buys my favorite snacks",
+        title: "Snack fairy",
+        blurb: "He knows the exact ones. (Emergency stash included.)",
+        question: "My top pringles flavor?",
+        answer: "barbeque",
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "flowers",
+        tag: "Because he keeps my home full of flowers",
+        title: "Bouquet timeline",
+        blurb: "A gallery of bouquets through the seasons.",
+        question: "Which flowers are my favourite",
+        answer: "Peonies",
+        notes: [],
+        gallery: []
+      },
+      {
+        id: "kiddo",
+        tag: "Because he was the cutest kid",
+        title: "Baby Vlad, forever protected",
+        blurb: "I want that curious, playful kid inside you to always feel safe, seen, and free to wonder.",
+        question: "Your childhood nickname?",
+        answer: "vladut",
+        notes: [],
+        gallery: []
+      }
+    ]
   };
 
   // ----------------------
-  // RUNTIME — no edits needed below
+  // RUNTIME — generate numbered, lockable cards
   // ----------------------
   document.getElementById('yourName').textContent = YOUR_NAME;
 
@@ -234,60 +226,108 @@
   }
   document.getElementById('dayCounter').textContent = daysSince(VLAD_BIRTHDATE);
 
-  // Jump buttons
-  document.querySelectorAll('.btn[data-jump]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const id = btn.getAttribute('data-jump');
-      document.querySelector(id).scrollIntoView({behavior:'smooth', block:'center'});
-    });
-  });
+  // Build cards
+  const grid = document.getElementById('reasons-grid');
 
-  // Fill notes
-  function fillList(id, arr){
-    const el = document.getElementById(id);
-    arr.forEach(txt=>{
+  function createCard(reason, idx){
+    const card = document.createElement('section');
+    card.className = 'section-card locked';
+    card.id = reason.id;
+
+    const pill = document.createElement('span');
+    pill.className = 'pill';
+    pill.textContent = reason.tag;
+
+    const count = document.createElement('span');
+    count.className = 'count-pill';
+    count.textContent = `Reason #${idx+1}`;
+
+    const h2 = document.createElement('h2');
+    h2.textContent = reason.title;
+
+    const p = document.createElement('p');
+    p.textContent = reason.blurb;
+
+    // notes list
+    const detailsNotes = document.createElement('details');
+    const sumN = document.createElement('summary');
+    sumN.innerHTML = '<strong>Notes & tiny stories</strong>';
+    const notesWrap = document.createElement('div');
+    notesWrap.className = 'reasons';
+    notesWrap.id = `${reason.id}-notes`;
+    reason.notes.forEach(txt=>{
       const d = document.createElement('div');
-      d.className = 'reason';
-      d.textContent = txt;
-      el.appendChild(d);
-    })
-  }
-  fillList('supportive-notes', supportiveNotes);
-  fillList('smartest-notes', smartestNotes);
-  fillList('involved-notes', involvedNotes);
-  fillList('movies-notes', moviesNotes);
+      d.className = 'reason'; d.textContent = txt; notesWrap.appendChild(d);
+    });
+    detailsNotes.appendChild(sumN); detailsNotes.appendChild(notesWrap);
 
-  // Galleries
-  function fillGallery(id, arr){
-    const el = document.getElementById(id);
-    arr.forEach(src=>{
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.src = src;
-      img.alt = 'photo';
-      img.addEventListener('click', ()=> openLightbox(src));
-      el.appendChild(img);
-    })
+    // gallery
+    const gal = document.createElement('div');
+    gal.className = 'gallery'; gal.id = `${reason.id}-gallery`;
+    reason.gallery.forEach(src=> addImg(gal, src));
+
+    // lock overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'lock-overlay';
+    overlay.innerHTML = `
+      <div class="lock-ui">
+        <div class="label">Guess to unlock: <em>${reason.question}</em></div>
+        <div class="row">
+          <input type="text" placeholder="your answer" aria-label="answer" />
+          <button class="btn">Unlock</button>
+        </div>
+        <div class="hint small">(Not case sensitive. Try an inside joke 😉)</div>
+      </div>`;
+
+    // unlock logic
+    const btn = overlay.querySelector('button');
+    const input = overlay.querySelector('input');
+    btn.addEventListener('click', async ()=>{
+      const guess = (input.value || '').trim().toLowerCase();
+      const okPlain = reason.answer && guess === reason.answer.trim().toLowerCase();
+      let okHash = false;
+      if(!okPlain && reason.answerHash){
+        const hex = await sha256Hex(guess);
+        okHash = hex === reason.answerHash.toLowerCase();
+      }
+      if(okPlain || okHash){
+        card.classList.remove('locked');
+        overlay.style.display = 'none';
+      } else {
+        input.value = '';
+        input.placeholder = 'try again ✨';
+      }
+    });
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') btn.click(); });
+
+    card.appendChild(pill); card.appendChild(count); card.appendChild(h2); card.appendChild(p); card.appendChild(detailsNotes); card.appendChild(gal); card.appendChild(overlay);
+    return card;
   }
-  fillGallery('supportive-gallery', galleries.supportive);
-  fillGallery('food-gallery', galleries.food);
-  fillGallery('music-gallery', galleries.music);
-  fillGallery('snacks-gallery', galleries.snacks);
-  fillGallery('flowers-gallery', galleries.flowers);
-  fillGallery('kiddo-gallery', galleries.kiddo);
+
+  function addImg(container, src){
+    const img = document.createElement('img');
+    img.loading = 'lazy'; img.src = src; img.alt = 'photo';
+    img.addEventListener('click', ()=> openLightbox(src));
+    container.appendChild(img);
+  }
+
+  // Render all
+  CONFIG.reasons.forEach((r, i)=> grid.appendChild(createCard(r, i)));
 
   // Lightbox
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lightbox-img');
+  const lb = document.createElement('div');
+  lb.className = 'lightbox'; lb.id = 'lightbox';
+  lb.innerHTML = '<img alt="expanded" id="lightbox-img" />';
+  document.body.appendChild(lb);
+  const lbImg = lb.querySelector('#lightbox-img');
   function openLightbox(src){ lbImg.src = src; lb.style.display='grid'; }
   lb.addEventListener('click', ()=>{ lb.style.display='none'; lbImg.src=''; });
 
-  // Heart confetti on clicks (kept for fun)
+  // Hearts (fun)
   function heartBurst(x,y){
     for(let i=0;i<6;i++){
       const h = document.createElement('div');
-      h.className = 'heart';
-      h.textContent = '❤';
+      h.className = 'heart'; h.textContent = '❤';
       h.style.left = (x + (Math.random()*40-20)) + 'px';
       h.style.top = (y + (Math.random()*20-10)) + 'px';
       h.style.transform = `translateY(0) scale(${0.8 + Math.random()*0.6})`;
@@ -295,7 +335,15 @@
       setTimeout(()=> h.remove(), 1600);
     }
   }
-  document.addEventListener('click',(e)=>{ if(!lb.contains(e.target)) heartBurst(e.clientX,e.clientY); });
+  document.addEventListener('click',(e)=>{ if(!e.target.closest('.lightbox')) heartBurst(e.clientX,e.clientY); });
+
+  // Optional: SHA-256 helper (for hashed answers)
+  async function sha256Hex(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    const bytes = Array.from(new Uint8Array(buf));
+    return bytes.map(b=> b.toString(16).padStart(2,'0')).join('');
+  }
 </script>
 </body>
 </html>
