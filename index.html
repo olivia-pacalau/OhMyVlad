@@ -60,8 +60,57 @@
     a{color:var(--accent-2); text-decoration:none}
     a:hover{text-decoration:underline}
       /* Lockable cards */
-    .locked .lock-overlay{display:flex}
+    .locked .lock-overlay{display:none; position:absolute; inset:0; 
+      /* fully opaque but not flat black: layered gradients + faint pattern */
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
+        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
+      /* subtle diagonal hatch pattern */
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+        linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+        linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+        linear-gradient(315deg, rgba(255,255,255,0.03) 25%, rgba(0,0,0,0) 25%),
+        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
+        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
+      background-size:12px 12px,12px 12px,12px 12px,12px 12px, auto, auto;
+      background-position:0 0,6px 0,6px -6px,0px 6px, center, center;
+      border-radius:22px; border:1px solid rgba(255,255,255,.08); 
+      align-items:center; justify-content:center; padding:18px; text-align:center}
+    
     .lock-overlay{display:none; position:absolute; inset:0; background:rgba(12,12,20,.72); backdrop-filter: blur(4px); border-radius:22px; border:1px solid rgba(255,255,255,.08); align-items:center; justify-content:center; padding:18px; text-align:center}
+    .lock-ui{display:flex; flex-direction:column; gap:10px; max-width:360px}
+    .lock-ui .label{font-weight:700}
+    .lock-ui input{background:#0e0e16; border:1px solid rgba(255,255,255,.12); color:var(--text); padding:10px 12px; border-radius:10px}
+    .lock-ui .row{display:flex; gap:8px}
+    .lock-ui .hint{color:var(--muted); font-size:12px}
+    .count-pill{position:absolute; top:10px; right:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
+      /* Intro */
+    .intro{margin:10px 0 24px}
+    .intro-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px}
+    .intro-card h2{margin:0 0 8px}
+    .collage{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-top:14px}
+    .collage img{width:100%; height:120px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08); cursor:pointer}
+
+    /* Lockable cards */
+    .locked .lock-overlay{display:flex}
+    .lock-overlay{display:none; position:absolute; inset:0; 
+      /* fully opaque but not flat black: layered gradients + faint pattern */
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
+        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
+      /* subtle diagonal hatch pattern */
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+        linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+        linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+        linear-gradient(315deg, rgba(255,255,255,0.03) 25%, rgba(0,0,0,0) 25%),
+        radial-gradient(1200px 800px at 20% -10%, rgba(32,33,45,1) 0%, rgba(24,24,34,1) 60%),
+        linear-gradient(180deg, rgba(26,27,38,1), rgba(20,21,30,1));
+      background-size:12px 12px,12px 12px,12px 12px,12px 12px, auto, auto;
+      background-position:0 0,6px 0,6px -6px,0px 6px, center, center;
+      border-radius:22px; border:1px solid rgba(255,255,255,.08); 
+      align-items:center; justify-content:center; padding:18px; text-align:center}
     .lock-ui{display:flex; flex-direction:column; gap:10px; max-width:360px}
     .lock-ui .label{font-weight:700}
     .lock-ui input{background:#0e0e16; border:1px solid rgba(255,255,255,.12); color:var(--text); padding:10px 12px; border-radius:10px}
@@ -89,6 +138,17 @@
       <p class="small">You have been awesome for <span id="dayCounter">X</span> days.</p>
     </header>
 
+    <!-- Intro block above the cards -->
+    <section class="intro">
+      <div class="intro-card">
+        <h2 id="intro-title">Happy Birthday, Vlad! 🎉</h2>
+        <p id="intro-text" class="subtitle">I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year). You can edit this text in the CONFIG below or right here.</p>
+        <div id="collage" class="collage" aria-label="mini collage">
+          <!-- Filled by JS from collageImages; click to enlarge in lightbox -->
+        </div>
+      </div>
+    </section>
+
     <main class="grid" id="reasons-grid">
       <!-- Cards are generated by JS from CONFIG.reasons -->
     </main>
@@ -114,6 +174,11 @@
   // NOTE: Using plain 'answer' is simplest but visible in the page source.
   // If you want to hide it, provide 'answerHash' instead (lowercase hex) and leave 'answer' empty.
   const CONFIG = {
+    introTitle: "Happy Birthday, Vlad! 🎉",
+    introText: "I built this little website because… (edit this text in CONFIG.introText to say why he’s the best person ever, what you’re grateful for, and what you wish for him this year).",
+    collageImages: [
+      // e.g. "assets/collage_1.jpg", "assets/collage_2.jpg"
+    ],
     reasons: [
       {
         id: "supportive",
@@ -121,21 +186,17 @@
         title: "Cheerleader-in-chief",
         blurb: "From late-night pep talks to patient code reviews — thank you for always backing me.",
         question: "What snack do I always ask for before an exam?",
-        answer: "kinder bueno", // case-insensitive match
-        notes: [
-          // "You stayed on call while I finished my assignment.",
-        ],
-        gallery: [
-          // "assets/grade_10.png",
-        ]
+        answer: "kinder bueno",
+        notes: [],
+        gallery: []
       },
       {
         id: "smartest",
         tag: "Because he’s the smartest",
         title: "Big brain, bigger heart",
         blurb: "Brutal logic + gentle explanations. Somehow you make everything click.",
-        question: "What tool did you have to learn just to help me with work back in 2023? ",
-        answer: "PowerBI", // example
+        question: "Our inside joke variable name?",
+        answer: "foo",
         notes: [],
         gallery: []
       },
@@ -145,7 +206,7 @@
         title: "All-in — with me & friends",
         blurb: "You show up. For my assignments, for your crew, for everything that matters.",
         question: "Name one course you helped me ace.",
-        answer: "DeepLearning",
+        answer: "databases",
         notes: [],
         gallery: []
       },
@@ -154,7 +215,7 @@
         tag: "Because he has the best movie taste",
         title: "Our cinema club",
         blurb: "Curated marathons, perfect snacks, and director trivia on tap.",
-        question: "What ",
+        question: "Our favorite trilogy?",
         answer: "before trilogy",
         notes: [],
         gallery: []
@@ -164,8 +225,8 @@
         tag: "Because he opened a new gastronomic world",
         title: "Head chef Vlad",
         blurb: "Tasting menus at home, bold flavors, and a permanent reservation in my heart.",
-        question: "What was the first meal you cooked for me",
-        answer: "somon",
+        question: "Signature dish at home?",
+        answer: "ramen",
         notes: [],
         gallery: []
       },
@@ -174,8 +235,8 @@
         tag: "Because he expanded my music taste",
         title: "New sounds, new feelings",
         blurb: "Artists I now love because of you. (And the kitchen dances.)",
-        question: "Who is my favourite artist now that you introduced me to?",
-        answer: "Ruby Waters",
+        question: "Name one artist I discovered because of you",
+        answer: "tame impala",
         notes: [],
         gallery: []
       },
@@ -184,8 +245,8 @@
         tag: "Because he buys my favorite snacks",
         title: "Snack fairy",
         blurb: "He knows the exact ones. (Emergency stash included.)",
-        question: "My top pringles flavor?",
-        answer: "barbeque",
+        question: "My top crisps flavor?",
+        answer: "paprika",
         notes: [],
         gallery: []
       },
@@ -194,17 +255,16 @@
         tag: "Because he keeps my home full of flowers",
         title: "Bouquet timeline",
         blurb: "A gallery of bouquets through the seasons.",
-        question: "Which flowers are my favourite",
-        answer: "Peonies",
+        question: "What was the color of the first bouquet?",
+        answer: "yellow",
         notes: [],
-        gallery: [
-            "assets/flowers1.jpg",
-            "assets/flowers2.jpg",
-            "assets/flowers3.jpg",
-            "assets/flowers4.jpg",
-            "assets/flowers5.jpg",
-            "assets/flowers6.jpg",
-          ]
+        gallery: [ 
+                  "assets/flowers1.jpg",
+                  "assets/flowers2.jpg",
+                  "assets/flowers3.jpg",
+                  "assets/flowers4.jpg",
+                  "assets/flowers5.jpg",
+                  "assets/flowers6.jpg"]
       },
       {
         id: "kiddo",
