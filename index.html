@@ -3,234 +3,286 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Oh My Vlad</title>
-  <meta name="description" content="A tiny love letter for Vlad — made with HTML, CSS & a sprinkle of JS." />
+  <title>Why Vlad Is The Best Person Ever — OhMyVlad</title>
+  <meta name="description" content="A tiny love site for Vlad — galleries, notes, and reasons he’s the best." />
   <style>
     :root{
-      --bg:#0f0f14;
-      --card:#171722;
-      --text:#f5f7ff;
-      --muted:#a9b0c6;
-      --accent:#9b87f5;
-      --accent-2:#58d5c9;
-      --heart:#ff5d8f;
-      --success:#7ddc97;
-      --warning:#ffd36b;
+      --bg:#0f0f14; --card:#171722; --text:#f5f7ff; --muted:#a9b0c6;
+      --accent:#9b87f5; --accent-2:#58d5c9; --heart:#ff5d8f; --warning:#ffd36b;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 800px at 10% -10%, #1a1a27 0%, transparent 60%),
-                  radial-gradient(1200px 800px at 100% 10%, #151522 0%, transparent 60%), var(--bg);
-      color:var(--text); overflow-x:hidden;
-    }
-    /* --- Loading Screen --- */
-    #loader{
-      position:fixed; inset:0; display:grid; place-items:center; background:var(--bg); z-index:9999;
-    }
-    .loader-card{
-      background:var(--card); padding:24px 28px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,.35);
-      display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center;
-    }
-    .progress{height:8px; width:260px; background:#0c0c12; border-radius:999px; overflow:hidden}
-    .progress > span{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:999px; transition:width .3s ease}
+    body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; background: radial-gradient(1200px 800px at 10% -10%, #1a1a27 0%, transparent 60%), radial-gradient(1200px 800px at 100% 10%, #151522 0%, transparent 60%), var(--bg); color:var(--text); overflow-x:hidden}
 
-    /* --- Header --- */
-    header{max-width:960px; margin:80px auto 24px; padding:0 20px; text-align:center}
-    h1{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 10px}
-    .subtitle{color:var(--muted); font-size:clamp(14px,2.8vw,18px)}
+    /* wider layout */
+    .wrap{max-width:1300px; margin:0 auto; padding:0 28px}
 
-    /* --- CTA buttons --- */
-    .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:22px 0 8px}
-    .btn{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08); color:var(--text);
-      padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:600; letter-spacing:.2px;
-      transition:transform .15s ease, border-color .15s ease;
-    }
+    /* Header */
+    header{padding:84px 0 18px; text-align:center}
+    h1{font-size:clamp(40px,6.2vw,72px); line-height:1.05; margin:0 0 12px}
+    .subtitle{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
+
+    /* CTA */
+    .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:26px 0 10px}
+    .btn{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); color:var(--text); padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:600; letter-spacing:.2px; transition:transform .15s ease, border-color .15s ease}
     .btn:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.15)}
 
-    /* --- Sections grid --- */
-    .grid{max-width:980px; margin:30px auto; padding:0 20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px}
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
-      border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:18px; display:flex; flex-direction:column; gap:10px;
-      min-height:170px; position:relative; overflow:hidden
-    }
-    .card h3{margin:2px 0 2px; font-size:20px}
-    .card p{margin:0; color:var(--muted)}
-    .pill{font-size:12px; color:#0b1020; background:var(--warning); padding:6px 10px; border-radius:999px; align-self:flex-start; font-weight:700}
+    /* Grid */
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px}
+    .section-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px; min-height:180px; position:relative}
+    .section-card h2{margin:0 0 8px; font-size:24px}
+    .section-card p{margin:0 0 8px; color:var(--muted)}
+    .pill{font-size:12px; color:#0b1020; background:var(--warning); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block; margin-bottom:8px}
 
-    /* Expandables */
-    details{margin-top:6px}
+    /* Details */
+    details{margin-top:8px}
     details summary{cursor:pointer; list-style:none}
     details summary::-webkit-details-marker{display:none}
-    details .reasons{margin:8px 0 0; padding:0 0 2px 0; display:flex; flex-direction:column; gap:8px}
+    .reasons{margin:10px 0 0; display:flex; flex-direction:column; gap:10px}
     .reason{background:rgba(255,255,255,.04); padding:10px 12px; border-radius:12px; border:1px dashed rgba(255,255,255,.1)}
 
-    /* --- Footer / embed --- */
-    footer{max-width:960px; margin:24px auto 80px; padding:0 20px; color:var(--muted); text-align:center}
+    /* Gallery */
+    .gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-top:10px}
+    .gallery img{width:100%; height:140px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08); cursor:pointer}
+
+    /* Lightbox */
+    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; place-items:center; z-index:60}
+    .lightbox img{max-width:92vw; max-height:84vh; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+    /* Footer */
+    footer{padding:30px 0 80px; text-align:center; color:var(--muted)}
     .small{font-size:12px; color:var(--muted)}
 
-    /* --- Heart confetti --- */
+    /* Hearts */
     .heart{position:fixed; font-size:16px; color:var(--heart); pointer-events:none; animation:float 1.6s ease-out forwards}
     @keyframes float{0%{transform:translateY(0) scale(.9); opacity:1} 100%{transform:translateY(-80px) scale(1.3); opacity:0}}
 
-    /* --- Modal (Easter Egg) --- */
-    .modal{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; place-items:center; z-index:50}
-    .modal-content{background:var(--card); padding:24px; border-radius:18px; max-width:520px; margin:0 16px; text-align:center; border:1px solid rgba(255,255,255,.08)}
-
-    /* --- Badges --- */
-    .badge{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); padding:10px 12px; border-radius:14px; font-weight:600}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-
-    /* --- Link styles --- */
-    a { color: var(--accent-2); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a{color:var(--accent-2); text-decoration:none}
+    a:hover{text-decoration:underline}
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
-  <div id="loader" aria-hidden="true">
-    <div class="loader-card">
-      <div class="badge mono">Compiling Vlad's Awesomeness… <span id="pct">0%</span></div>
-      <div class="progress"><span id="bar"></span></div>
-      <div class="small">Please wait while we link to the <strong>coffee API</strong> ☕ and <strong>hug service</strong> 🤗</div>
-    </div>
-  </div>
-
-  <header>
-    <h1>Oh My Vlad</h1>
-    <p class="subtitle">A tiny site celebrating why <em>you</em> are the best. Built with love, caffeine, and a few lines of code. ✨</p>
-    <div class="cta">
-      <button class="btn" id="btn-coffee">Because: Coffee ☕</button>
-      <button class="btn" id="btn-code">Because: Code 💻</button>
-      <button class="btn" id="btn-music">Because: Music 🎶</button>
-      <button class="btn" id="btn-food">Because: Food 🍝</button>
-      <button class="btn" id="btn-secret" title="(psst) try the Konami code">Secret ⭐</button>
-    </div>
-    <p class="small">We've been awesome for <span id="dayCounter">X</span> days.</p>
-  </header>
-
-  <main class="grid">
-    <!-- Coffee Card -->
-    <section class="card" id="card-coffee">
-      <span class="pill">Coffee</span>
-      <h3>Your latte art > everyone else's</h3>
-      <p>You have a sixth sense for bloom time and grind size. Our mornings taste better because of you.</p>
-      <details>
-        <summary><strong>3 reasons your coffee is perfect</strong></summary>
-        <div class="reasons">
-          <div class="reason">You somehow nail the <em>exact</em> water-to-coffee ratio without a scale.</div>
-          <div class="reason">Your tamp is smooth, like your hugs.</div>
-          <div class="reason">You always save me the first sip. That is love.</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- Code Card -->
-    <section class="card" id="card-code">
-      <span class="pill">Code</span>
-      <h3>Clean commits & kind comments</h3>
-      <p>Your pull requests make the world (and my heart) more stable. Zero bugs, only butterflies.</p>
-      <details>
-        <summary><strong>Release notes v❤️:</strong></summary>
-        <div class="reasons">
-          <div class="reason mono">feat(love): add infinite patience loop</div>
-          <div class="reason mono">fix(us): handle edge-cases with extra grace</div>
-          <div class="reason mono">perf(hugs): reduce latency to 0ms</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- Music Card -->
-    <section class="card" id="card-music">
-      <span class="pill">Music</span>
-      <h3>Your music taste = chef's kiss</h3>
-      <p>The way you share songs feels like mini love letters.</p>
-      <details>
-        <summary><strong>For you, on repeat</strong></summary>
-        <div class="reasons">
-          <div class="reason">"Song 1" — because it sounds like golden hour with you.</div>
-          <div class="reason">"Song 2" — because we first danced to this in the kitchen.</div>
-          <div class="reason">"Song 3" — because the lyrics are basically our chat history.</div>
-        </div>
-      </details>
-      <div style="margin-top:10px">
-        <!-- Replace the src with your playlist embed link -->
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+  <div class="wrap">
+    <header>
+      <h1>Why Vlad Is The Best <span style="white-space:nowrap">Person Ever</span></h1>
+      <p class="subtitle">A growing archive of love: reasons, memories, screenshots, and tiny galleries. Built with affection and caffeine. ✨</p>
+      <div class="cta">
+        <button class="btn" data-jump="#supportive">Supportive</button>
+        <button class="btn" data-jump="#smartest">Smartest</button>
+        <button class="btn" data-jump="#involved">Most involved</button>
+        <button class="btn" data-jump="#movies">Movie taste</button>
+        <button class="btn" data-jump="#food">Gastronomy</button>
+        <button class="btn" data-jump="#music">Music expansion</button>
+        <button class="btn" data-jump="#snacks">Snack fairy</button>
+        <button class="btn" data-jump="#flowers">Bouquets</button>
+        <button class="btn" data-jump="#kiddo">Baby Vlad</button>
       </div>
-    </section>
+      <p class="small">You have been awesome for <span id="dayCounter">X</span> days.</p>
+    </header>
 
-    <!-- Food Card -->
-    <section class="card" id="card-food">
-      <span class="pill">Food</span>
-      <h3>Date-night tasting menu</h3>
-      <p>Tonight, you're head chef. Pick your course; I'll be your sous-chef and official taste tester.</p>
-      <details>
-        <summary><strong>Menu ideas</strong></summary>
-        <div class="reasons">
-          <div class="reason">Starter — bruschetta with garlicky tomatoes</div>
-          <div class="reason">Main — creamy mushroom pasta or ramen night</div>
-          <div class="reason">Dessert — tiramisu or chocolate-dipped strawberries</div>
+    <main class="grid">
+      <!-- Supportive -->
+      <section class="section-card" id="supportive">
+        <span class="pill">Because he’s the most supportive</span>
+        <h2>Cheerleader-in-chief</h2>
+        <p>From late-night pep talks to patient code reviews — thank you for always backing me.</p>
+        <details>
+          <summary><strong>Notes & tiny stories</strong></summary>
+          <div class="reasons" id="supportive-notes"></div>
+        </details>
+        <details>
+          <summary><strong>Screenshots (texts / grades)</strong></summary>
+          <div class="gallery" id="supportive-gallery"></div>
+        </details>
+      </section>
+
+      <!-- Smartest -->
+      <section class="section-card" id="smartest">
+        <span class="pill">Because he’s the smartest</span>
+        <h2>Big brain, bigger heart</h2>
+        <p>Brutal logic + gentle explanations. Somehow you make everything click.</p>
+        <details>
+          <summary><strong>Proof / little wins</strong></summary>
+          <div class="reasons" id="smartest-notes"></div>
+        </details>
+      </section>
+
+      <!-- Involved -->
+      <section class="section-card" id="involved">
+        <span class="pill">Because he’s the most involved</span>
+        <h2>All-in — with me & friends</h2>
+        <p>You show up. For my assignments, for your crew, for everything that matters.</p>
+        <details>
+          <summary><strong>Stories & thanks</strong></summary>
+          <div class="reasons" id="involved-notes"></div>
+        </details>
+      </section>
+
+      <!-- Movies -->
+      <section class="section-card" id="movies">
+        <span class="pill">Because he has the best movie taste</span>
+        <h2>Our cinema club</h2>
+        <p>Curated marathons, perfect snacks, and director trivia on tap.</p>
+        <details>
+          <summary><strong>Watchlist / faves</strong></summary>
+          <div class="reasons" id="movies-notes"></div>
+        </details>
+      </section>
+
+      <!-- Food / Gastronomy -->
+      <section class="section-card" id="food">
+        <span class="pill">Because he opened a new gastronomic world</span>
+        <h2>Head chef Vlad</h2>
+        <p>Tasting menus at home, bold flavors, and a permanent reservation in my heart.</p>
+        <details>
+          <summary><strong>Photo bites</strong></summary>
+          <div class="gallery" id="food-gallery"></div>
+        </details>
+      </section>
+
+      <!-- Music expansion -->
+      <section class="section-card" id="music">
+        <span class="pill">Because he expanded my music taste</span>
+        <h2>New sounds, new feelings</h2>
+        <p>Artists I now love because of you. (And the kitchen dances.)</p>
+        <details>
+          <summary><strong>Songs from Vlad</strong></summary>
+          <div class="gallery" id="music-gallery"></div>
+        </details>
+        <div style="margin-top:10px">
+          <!-- Replace with your own Spotify collage/smart embed later if you want -->
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
         </div>
-      </details>
-      <button class="btn" id="btn-menu">Generate a random menu</button>
-      <p id="menu-output" class="small" aria-live="polite"></p>
-    </section>
-  </main>
+      </section>
 
-  <footer>
-    <p class="small">Made with ❤️ by <span id="yourName">Your Name</span>. <span class="mono">OhMyVlad v1.0</span></p>
-    <p class="small">Press <span class="mono">↑ ↑ ↓ ↓ ← → ← → B A</span> for a secret.</p>
-  </footer>
+      <!-- Snack fairy -->
+      <section class="section-card" id="snacks">
+        <span class="pill">Because he buys my favorite snacks</span>
+        <h2>Snack fairy</h2>
+        <p>He knows the exact ones. (Emergency stash included.)</p>
+        <div class="gallery" id="snacks-gallery"></div>
+      </section>
 
-  <!-- Modal for Secret Message -->
-  <div class="modal" id="secretModal" role="dialog" aria-modal="true" aria-labelledby="secretTitle">
-    <div class="modal-content">
-      <h2 id="secretTitle">Secret unlocked ✨</h2>
-      <p style="color:var(--muted)">Vlad, you are my favorite bug fix, my daily commit, and my forever repo. <br/>P.S. Check your coupons for one surprise merge request 💌</p>
-      <button class="btn" id="closeModal">Close</button>
-    </div>
+      <!-- Flowers -->
+      <section class="section-card" id="flowers">
+        <span class="pill">Because he keeps my home full of flowers</span>
+        <h2>Bouquet timeline</h2>
+        <p>A gallery of bouquets through the seasons.</p>
+        <div class="gallery" id="flowers-gallery"></div>
+      </section>
+
+      <!-- Baby Vlad -->
+      <section class="section-card" id="kiddo">
+        <span class="pill">Because he was the cutest kid</span>
+        <h2>Baby Vlad, forever protected</h2>
+        <p>I want that curious, playful kid inside you to always feel safe, seen, and free to wonder.</p>
+        <div class="gallery" id="kiddo-gallery"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p class="small">Made with ❤️ by <span id="yourName">Your Name</span>. <span class="small mono">OhMyVlad v2.0</span></p>
+    </footer>
   </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox"><img alt="expanded" id="lightbox-img"/></div>
 
 <script>
   // ----------------------
   // CONFIG — edit these!
   // ----------------------
-  const YOUR_NAME = "Olivia";               // your name
-  const DATE_WE_MET = "2023-09-01";         // YYYY-MM-DD (used for day counter)
-  const PLAYLIST_IFRAME_SELECTOR = 'iframe'; // optional: replace embed above
+  const YOUR_NAME = "Olivia";                 // your name
+  const VLAD_BIRTHDATE = "1998-09-18";        // used for day counter (YYYY-MM-DD)
 
+  // Text notes for various sections (add/remove strings)
+  const supportiveNotes = [
+    // e.g. "You stayed on call while I debugged the SQL mess.",
+  ];
+  const smartestNotes = [
+    // e.g. "Explained pointers to me with three metaphors 😂",
+  ];
+  const involvedNotes = [
+    // e.g. "Helped me prep the presentation for Prof. X (got a 10!)",
+  ];
+  const moviesNotes = [
+    // e.g. "Before Sunrise marathon + midnight tea",
+  ];
+
+  // Image galleries — put your files in /assets and list their paths here
+  // Example: "assets/flowers_2024_01.jpg"
+  const galleries = {
+    supportive: [ /* screenshots of texts/grades */ ],
+    food: [ /* food pics */ ],
+    music: [ /* album covers / song screenshots */ ],
+    snacks: [ /* favorite snack pics */ ],
+    flowers: [ /* bouquet pics */ ],
+    kiddo: [ /* baby photos */ ]
+  };
+
+  // ----------------------
+  // RUNTIME — no edits needed below
+  // ----------------------
   document.getElementById('yourName').textContent = YOUR_NAME;
 
-  // Day counter
+  // Day counter since birth
   function daysSince(dateStr){
     const start = new Date(dateStr + 'T00:00:00');
     const now = new Date();
     const diff = Math.floor((now - start) / (1000*60*60*24));
     return new Intl.NumberFormat().format(diff);
   }
-  document.getElementById('dayCounter').textContent = daysSince(DATE_WE_MET);
+  document.getElementById('dayCounter').textContent = daysSince(VLAD_BIRTHDATE);
 
-  // Loader animation
-  (function(){
-    const bar = document.getElementById('bar');
-    const pct = document.getElementById('pct');
-    let p = 0;
-    const timer = setInterval(()=>{
-      p += Math.random()*20; if(p>100) p = 100;
-      bar.style.width = p + '%';
-      pct.textContent = Math.floor(p) + '%';
-      if(p>=100){
-        clearInterval(timer);
-        setTimeout(()=>{document.getElementById('loader').style.display='none';}, 300);
-      }
-    }, 200);
-  })();
+  // Jump buttons
+  document.querySelectorAll('.btn[data-jump]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const id = btn.getAttribute('data-jump');
+      document.querySelector(id).scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  });
 
-  // Heart confetti on clicks
+  // Fill notes
+  function fillList(id, arr){
+    const el = document.getElementById(id);
+    arr.forEach(txt=>{
+      const d = document.createElement('div');
+      d.className = 'reason';
+      d.textContent = txt;
+      el.appendChild(d);
+    })
+  }
+  fillList('supportive-notes', supportiveNotes);
+  fillList('smartest-notes', smartestNotes);
+  fillList('involved-notes', involvedNotes);
+  fillList('movies-notes', moviesNotes);
+
+  // Galleries
+  function fillGallery(id, arr){
+    const el = document.getElementById(id);
+    arr.forEach(src=>{
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.src = src;
+      img.alt = 'photo';
+      img.addEventListener('click', ()=> openLightbox(src));
+      el.appendChild(img);
+    })
+  }
+  fillGallery('supportive-gallery', galleries.supportive);
+  fillGallery('food-gallery', galleries.food);
+  fillGallery('music-gallery', galleries.music);
+  fillGallery('snacks-gallery', galleries.snacks);
+  fillGallery('flowers-gallery', galleries.flowers);
+  fillGallery('kiddo-gallery', galleries.kiddo);
+
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  function openLightbox(src){ lbImg.src = src; lb.style.display='grid'; }
+  lb.addEventListener('click', ()=>{ lb.style.display='none'; lbImg.src=''; });
+
+  // Heart confetti on clicks (kept for fun)
   function heartBurst(x,y){
     for(let i=0;i<6;i++){
       const h = document.createElement('div');
@@ -243,45 +295,7 @@
       setTimeout(()=> h.remove(), 1600);
     }
   }
-  document.addEventListener('click',(e)=>{
-    heartBurst(e.clientX,e.clientY);
-  });
-
-  // Scroll to sections via buttons
-  function goTo(id){
-    document.getElementById(id).scrollIntoView({behavior:'smooth', block:'center'});
-  }
-  document.getElementById('btn-coffee').onclick = ()=> goTo('card-coffee');
-  document.getElementById('btn-code').onclick = ()=> goTo('card-code');
-  document.getElementById('btn-music').onclick = ()=> goTo('card-music');
-  document.getElementById('btn-food').onclick = ()=> goTo('card-food');
-
-  // Random menu generator
-  const starters = ['Bruschetta','Caprese skewers','Garlic prawns','Miso soup'];
-  const mains = ['Cacio e pepe','Mushroom risotto','Ramen night','Homemade burgers','Creamy pesto gnocchi'];
-  const desserts = ['Tiramisu','Affogato','Chocolate fondue','Panna cotta'];
-  document.getElementById('btn-menu').addEventListener('click',()=>{
-    const r = (arr)=> arr[Math.floor(Math.random()*arr.length)];
-    const text = `Tonight: ${r(starters)} → ${r(mains)} → ${r(desserts)}`;
-    document.getElementById('menu-output').textContent = text;
-  });
-
-  // Konami code → secret modal
-  const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-  const buffer = [];
-  window.addEventListener('keydown', (e)=>{
-    buffer.push(e.key);
-    if(buffer.length > KONAMI.length) buffer.shift();
-    if(KONAMI.every((k,i)=> buffer[i] === k)){
-      document.getElementById('secretModal').style.display = 'grid';
-    }
-  });
-  document.getElementById('btn-secret').onclick = ()=>{
-    document.getElementById('secretModal').style.display = 'grid';
-  };
-  document.getElementById('closeModal').onclick = ()=>{
-    document.getElementById('secretModal').style.display = 'none';
-  };
+  document.addEventListener('click',(e)=>{ if(!lb.contains(e.target)) heartBurst(e.clientX,e.clientY); });
 </script>
 </body>
 </html>
