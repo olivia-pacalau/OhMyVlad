@@ -24,8 +24,12 @@
     .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:white; padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:600; letter-spacing:.2px; transition:transform .15s ease, opacity .15s ease}
     .btn:hover{transform:translateY(-2px); opacity:0.9}
 
-    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px}
-    .section-card{background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px; min-height:180px; position:relative; cursor:pointer; overflow:hidden}
+    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
+    @media (max-width: 980px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 580px){.grid{grid-template-columns:1fr}}h: 98.section-card{background:#0a0a0a; border:1.5px solid #0f5132; border-radius:20px; padding:26px; min-height:120px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; cursor:pointer}
+    .section-card:hover{transform:translateY(-2px); border-color:#198754; box-shadow:0 10px 20px rgba(0,0,0,.25)}
+    .section-card h2{margin:0; font-size:22px; letter-spacing:.3px}
+    .count-pill{display:none} /* hidden in this version */255,255,.08); border-radius:22px; padding:22px; min-height:180px; position:relative; cursor:pointer; overflow:hidden}
     .section-card h2{margin:0 0 8px; font-size:24px}
     .section-card p{margin:0 0 8px; color:var(--muted)}
     .pill{font-size:12px; color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent-2)); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block; margin-bottom:8px}
@@ -62,7 +66,19 @@
   <div class="wrap">
     <header>
       <h1>Why Vlad Is The Best <span style="white-space:nowrap">Person Ever</span></h1>
-      <p class="subtitle"> Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa prețios, dar am să incerc aici măcăr câteva să le impărtășesc cu tine. </p>
+      <p class="subtitle">A growing archive of love: reasons, memories, screenshots, and tiny galleries. Built with affection and caffeine. ✨</p>
+      <div class="cta">
+        <button class="btn" data-jump="#supportive">Supportive</button>
+        <button class="btn" data-jump="#smartest">Smartest</button>
+        <button class="btn" data-jump="#involved">Most involved</button>
+        <button class="btn" data-jump="#movies">Movie taste</button>
+        <button class="btn" data-jump="#food">Gastronomy</button>
+        <button class="btn" data-jump="#music">Music expansion</button>
+        <button class="btn" data-jump="#snacks">Snack fairy</button>
+        <button class="btn" data-jump="#flowers">Bouquets</button>
+        <button class="btn" data-jump="#kiddo">Baby Vlad</button>
+      </div>
+      <p class="small">You have been awesome for <span id="dayCounter">X</span> days.</p>
     </header>
 
     <section class="intro">
@@ -90,28 +106,12 @@
       <p id="modal-blurb"></p>
       <div id="modal-notes"></div>
       <div class="reason-gallery" id="modal-gallery"></div>
-      <button class="close-btn" id="closeModal">Close</button>
-    </div>
-  </div>
-
-<script>
-  const YOUR_NAME = "Olivia";
-  const VLAD_BIRTHDATE = "1998-09-18";
-
-  const CONFIG = {
+      <button class="close-btn" id="closeModal">const CONFIG = {
     introTitle: "Happy Birthday, Vlad! 🎉",
     introText: "I built this little website because… (edit this text in CONFIG.introText).",
     collageImages: [],
-    reasons: [
-      {id:"supportive",tag:"Because he’s the most supportive",title:"Cheerleader-in-chief",blurb:"From late-night pep talks to patient code reviews.",question:"What snack do I always ask for before an exam?",answer:"kinder bueno",notes:[],gallery:[]},
-      {id:"smartest",tag:"Because he’s the smartest",title:"Big brain, bigger heart",blurb:"Brutal logic + gentle explanations.",question:"Our inside joke variable name?",answer:"foo",notes:[],gallery:[]},
-      {id:"involved",tag:"Because he’s the most involved",title:"All-in — with me & friends",blurb:"You show up.",question:"Name one course you helped me ace.",answer:"databases",notes:[],gallery:[]},
-      {id:"movies",tag:"Because he has the best movie taste",title:"Our cinema club",blurb:"Curated marathons, perfect snacks.",question:"Our favorite trilogy?",answer:"before trilogy",notes:[],gallery:[]},
-      {id:"food",tag:"Because he opened a new gastronomic world",title:"Head chef Vlad",blurb:"Tasting menus at home.",question:"Signature dish at home?",answer:"ramen",notes:[],gallery:[]},
-      {id:"music",tag:"Because he expanded my music taste",title:"New sounds, new feelings",blurb:"Artists I now love because of you.",question:"Name one artist I discovered because of you",answer:"tame impala",notes:[],gallery:[]},
-      {id:"snacks",tag:"Because he buys my favorite snacks",title:"Snack fairy",blurb:"He knows the exact ones.",question:"My top crisps flavor?",answer:"paprika",notes:[],gallery:[]},
-      {id:"flowers",tag:"Because he keeps my home full of flowers",title:"Bouquet timeline",blurb:"A gallery of bouquets.",question:"What was the color of the first bouquet?",answer:"yellow",notes:[],gallery:[]},
-      {id:"kiddo",tag:"Because he was the cutest kid",title:"Baby Vlad, forever protected",blurb:"I want that curious, playful kid inside you.",question:"Your childhood nickname?",answer:"vladut",notes:[],gallery:[]}
+    reasons: []
+  };,tag:"Because he was the cutest kid",title:"Baby Vlad, forever protected",blurb:"I want that curious, playful kid inside you.",question:"Your childhood nickname?",answer:"vladut",notes:[],gallery:[]}
     ]
   };
 
@@ -138,29 +138,19 @@
   document.getElementById('intro-text').textContent = CONFIG.introText;
   CONFIG.collageImages.forEach(src=> addImg(document.getElementById('collage'),src));
 
-  const grid=document.getElementById('reasons-grid');
-  CONFIG.reasons.forEach((r,i)=> grid.appendChild(createCard(r,i)));
-
-  function createCard(reason,idx){
+  const gfunction createCard(reason,idx){
     const card=document.createElement('section');
     card.className='section-card'; card.id=reason.id;
-    card.innerHTML=`<span class="pill">${reason.tag}</span><span class="count-pill">Reason #${idx+1}</span><h2>${reason.title}</h2>`;
-
-    // overlay for question
-    const overlay=document.createElement('div');
-    overlay.className='lock-ui';
-    overlay.innerHTML=`<div class="label">Guess to unlock: <em>${reason.question}</em></div><div class="row"><input type="text" placeholder="your answer"/><button class="btn">Unlock</button></div><div class="hint small">(Not case sensitive)</div>`;
-    card.appendChild(overlay);
-
-    const btn=overlay.querySelector('button');
-    const input=overlay.querySelector('input');
-    btn.addEventListener('click',()=>check());
-    input.addEventListener('keydown',e=>{if(e.key==='Enter')check()});
-
-    function check(){
-      const guess=(input.value||'').trim().toLowerCase();
-      if(guess===reason.answer.toLowerCase()){
-        openModal(reason);
+    card.innerHTML=`<h2>${reason.title}</h2>`;
+    card.addEventListener('click',()=>{
+      modalTitle.textContent = reason.title;
+      modalBlurb.textContent = '';
+      modalNotes.innerHTML='';
+      modalGallery.innerHTML='';
+      modal.style.display='block';
+    });
+    return card;
+  }       openModal(reason);
       } else {input.value=''; input.placeholder='try again ✨';}
     }
 
