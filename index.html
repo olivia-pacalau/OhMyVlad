@@ -42,6 +42,10 @@
     @keyframes fadeIn{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
 
     .intro{margin:10px 0 24px}
+    .intro-split{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:center}
+    .intro-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px}
+    .intro-card h2{margin:0 0 8px}
+    .intro-photo img{width:100%; border-radius:22px; border:1px solid rgba(255,255,255,.08); object-fit:cover; max-height:300px}
     .intro-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px}
     .intro-card h2{margin:0 0 8px}
     .collage{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-top:14px}
@@ -74,10 +78,14 @@
     </header>
 
     <section class="intro">
-      <div class="intro-card">
-        <h2 id="intro-title">Happy Birthday, Vlad! 🎉</h2>
-        <p id="intro-text" class="subtitle">I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year). You can edit this text in the CONFIG below or right here.</p>
-        <div id="collage" class="collage" aria-label="mini collage"></div>
+      <div class="intro-split">
+        <div class="intro-card">
+          <h2 id="intro-title">Happy Birthday, Vlad! 🎉</h2>
+          <p id="intro-text" class="subtitle">I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year). You can edit this text in the CONFIG below or right here.</p>
+        </div>
+        <div class="intro-photo">
+          <img src="assets/vladmic1.jpg" alt="Vlad" />
+        </div>
       </div>
     </section>
 
@@ -114,7 +122,7 @@
       {id:"food",tag:"Because he opened a new gastronomic world",title:"Head chef Vlad",blurb:"Tasting menus at home.",question:"Signature dish at home?",answer:"ramen",notes:[],gallery:[]},
       {id:"music",tag:"Because he expanded my music taste",title:"New sounds, new feelings",blurb:"Artists I now love because of you.",question:"Name one artist I discovered because of you",answer:"tame impala",notes:[],gallery:[]},
       {id:"snacks",tag:"Because he buys my favorite snacks",title:"Snack fairy",blurb:"He knows the exact ones.",question:"My top crisps flavor?",answer:"paprika",notes:[],gallery:[]},
-      {id:"flowers",tag:"Because he keeps my home full of flowers",title:"Bouquet timeline",blurb:"A gallery of bouquets.",question:"What was the color of the first bouquet?",answer:"yellow",notes:[],gallery:[ "assets/flowers1.jpg", "assets/flowers2.jpg","assets/flowers3.jpg","assets/flowers4.jpg","assets/flowers5.jpg"]},
+      {id:"flowers",tag:"Because he keeps my home full of flowers",title:"Bouquet timeline",blurb:"A gallery of bouquets.",question:"What was the color of the first bouquet?",answer:"yellow",notes:[],gallery:[]},
       {id:"kiddo",tag:"Because he was the cutest kid",title:"Baby Vlad, forever protected",blurb:"I want that curious, playful kid inside you.",question:"Your childhood nickname?",answer:"vladut",notes:[],gallery:[]}
     ]
   };
