@@ -26,10 +26,11 @@
 
     .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
     @media (max-width: 980px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width: 580px){.grid{grid-template-columns:1fr}}h: 98.section-card{background:#0a0a0a; border:1.5px solid #0f5132; border-radius:20px; padding:26px; min-height:120px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; cursor:pointer}
+    @media (max-width: 580px){.grid{grid-template-columns:1fr}}
+    .section-card{background:#0a0a0a; border:1.5px solid #0f5132; border-radius:20px; padding:26px; min-height:120px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; cursor:pointer}
     .section-card:hover{transform:translateY(-2px); border-color:#198754; box-shadow:0 10px 20px rgba(0,0,0,.25)}
     .section-card h2{margin:0; font-size:22px; letter-spacing:.3px}
-    .count-pill{display:none} /* hidden in this version */255,255,.08); border-radius:22px; padding:22px; min-height:180px; position:relative; cursor:pointer; overflow:hidden}
+    .count-pill{display:none} /* hidden in this version */
     .section-card h2{margin:0 0 8px; font-size:24px}
     .section-card p{margin:0 0 8px; color:var(--muted)}
     .pill{font-size:12px; color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent-2)); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block; margin-bottom:8px}
@@ -106,13 +107,19 @@
       <p id="modal-blurb"></p>
       <div id="modal-notes"></div>
       <div class="reason-gallery" id="modal-gallery"></div>
-      <button class="close-btn" id="closeModal">const CONFIG = {
+      <button class="close-btn" id="closeModal">Close</button>
+    </div>
+  </div>
+
+<script>
+  const YOUR_NAME = "Olivia";
+  const VLAD_BIRTHDATE = "1998-09-18";
+
+  const CONFIG = {
     introTitle: "Happy Birthday, Vlad! 🎉",
     introText: "I built this little website because… (edit this text in CONFIG.introText).",
     collageImages: [],
     reasons: []
-  };,tag:"Because he was the cutest kid",title:"Baby Vlad, forever protected",blurb:"I want that curious, playful kid inside you.",question:"Your childhood nickname?",answer:"vladut",notes:[],gallery:[]}
-    ]
   };
 
   document.getElementById('yourName').textContent = YOUR_NAME;
@@ -138,7 +145,13 @@
   document.getElementById('intro-text').textContent = CONFIG.introText;
   CONFIG.collageImages.forEach(src=> addImg(document.getElementById('collage'),src));
 
-  const gfunction createCard(reason,idx){
+  const grid=document.getElementById('reasons-grid');
+  // Build 16 placeholder cards labelled Reason #n
+  for(let i=1;i<=16;i++){
+    grid.appendChild(createCard({id:`reason-${i}`, title:`Reason #${i}`}, i-1));
+  }
+
+  function createCard(reason,idx){
     const card=document.createElement('section');
     card.className='section-card'; card.id=reason.id;
     card.innerHTML=`<h2>${reason.title}</h2>`;
@@ -149,11 +162,6 @@
       modalGallery.innerHTML='';
       modal.style.display='block';
     });
-    return card;
-  }       openModal(reason);
-      } else {input.value=''; input.placeholder='try again ✨';}
-    }
-
     return card;
   }
 
