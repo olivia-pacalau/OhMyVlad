@@ -4,145 +4,171 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Why Vlad Is The Best Person Ever — OhMyVlad</title>
-  <meta name="description" content="A tiny love site for Vlad — galleries, notes, and reasons he’s the best." />
+  <meta name="description" content="A tiny love site for Vlad — reasons, text, and image galleries, all in one scroll." />
   <style>
     :root{
-      --bg:#1B1612; 
-      --text:#f5f7ff; 
+      /* Deep night + lively accents */
+      --bg:#0f0f14;
+      --text:#f7f8ff;
       --muted:#a9b0c6;
-      --copper:#B87333; 
-      --teal:#66C1BB;
+
+      --purple:#a78bfa;   /* lavender */
+      --blue:#60a5fa;     /* sky blue */
+
+      --card:#121320;     /* section bg */
+      --ring:#2b2f45;     /* subtle borders */
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
-      margin:0; 
+      margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: var(--bg); 
-      color:var(--text); 
-      overflow-x:hidden
+      background:
+        radial-gradient(900px 600px at 0% 0%, rgba(167,139,250,0.10), transparent 60%),
+        radial-gradient(900px 600px at 100% 10%, rgba(96,165,250,0.10), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
     }
+    .wrap{max-width:1100px; margin:0 auto; padding:0 22px}
 
-    .wrap{max-width:1300px; margin:0 auto; padding:0 28px}
-
-    header{padding:84px 0 18px; text-align:center; border-bottom:2px solid var(--copper); margin-bottom:30px}
-    h1{font-size:clamp(40px,6.2vw,72px); line-height:1.05; margin:0 0 12px; color:var(--copper)}
-    .subtitle{color:var(--teal); font-size:clamp(14px,2.6vw,18px)}
-
-    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:40px; border-top:2px solid var(--teal); padding-top:30px}
-    @media (max-width: 980px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width: 580px){.grid{grid-template-columns:1fr}}
-
-    .section-card{
-      background:#0a0a0a; 
-      border:2px solid var(--copper);
-      border-radius:20px; 
-      padding:26px; 
-      min-height:120px; 
-      display:flex; 
-      align-items:center; 
-      justify-content:center; 
-      text-align:center; 
-      cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    header{padding:72px 0 24px; text-align:center; margin-bottom:18px}
+    h1{
+      font-size:clamp(40px,6.2vw,72px);
+      line-height:1.05; margin:0 0 12px;
+      background:linear-gradient(90deg,var(--purple),var(--blue));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    .section-card:hover{
-      transform:translateY(-2px); 
-      border-color:var(--teal); 
-      box-shadow:0 10px 20px rgba(0,0,0,.25);
+    .subtitle{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
+
+    /* vertical story layout */
+    main.sections{display:flex; flex-direction:column; gap:36px; margin:36px 0 64px}
+
+    /* each reason block */
+    .reason{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
+      border:1px solid var(--ring);
+      border-radius:22px;
+      padding:22px;
     }
-    .section-card h2{margin:0; font-size:22px; color:var(--teal)}
+    .reason h2{
+      margin:0 0 6px; font-size:26px;
+      background:linear-gradient(90deg,var(--purple),var(--blue));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .reason .lead{color:var(--muted); margin:6px 0 14px}
 
-    .reason-modal{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; z-index:100; overflow-y:auto; padding:40px 20px}
-    .reason-content{background:#1a1a27; border-radius:20px; max-width:900px; margin:0 auto; padding:30px; animation:fadeIn .3s ease; border:2px solid var(--copper)}
-    .reason-content h2{margin-top:0; font-size:28px; color:var(--copper)}
-    .reason-gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-top:16px}
-    .reason-gallery img{width:100%; border-radius:12px; cursor:pointer; border:1px solid var(--teal)}
-    .close-btn{margin-top:20px; background:var(--teal); border:none; color:#000; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600}
+    /* galleries */
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:10px;
+    }
+    .gallery img{
+      width:100%; height:180px; object-fit:cover;
+      border-radius:12px; border:1px solid var(--ring);
+      background:#0c0d16;
+    }
+    @media (max-width:640px){ .gallery img{height:140px} }
 
-    @keyframes fadeIn{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
-
-    .intro{margin:10px 0 24px}
-    .intro-split{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:center}
-    .intro-card{background:#0a0a0a; border:2px solid var(--teal); border-radius:22px; padding:22px}
-    .intro-card h2{margin:0 0 8px; color:var(--copper)}
-    .intro-photo img{width:100%; border-radius:22px; border:2px solid var(--copper); object-fit:cover; max-height:300px}
-    .collage{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-top:14px}
-    .collage img{width:100%; height:120px; object-fit:cover; border-radius:12px; border:2px solid var(--teal); cursor:pointer}
-
-    footer{padding:30px 0 80px; text-align:center; color:var(--muted); border-top:2px solid var(--copper); margin-top:40px}
-    .small{font-size:12px; color:var(--muted)}
-
-    .heart{position:fixed; font-size:16px; color:var(--copper); pointer-events:none; animation:float 1.6s ease-out forwards}
-    @keyframes float{0%{transform:translateY(0) scale(.9); opacity:1} 100%{transform:translateY(-80px) scale(1.3); opacity:0}}
+    footer{padding:26px 0 60px; text-align:center; color:var(--muted); font-size:14px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>Why Vlad Is The Best <span style="white-space:nowrap">Person Ever</span></h1>
-      <p class="subtitle">Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa prețios, dar am să încerc aici măcar câteva să le împărtășesc cu tine. </p>
+      <h1>Why Vlad Is The Best Person Ever</h1>
+      <p class="subtitle">
+        Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa
+        prețios, dar am să încerc aici măcar câteva să le împărtășesc cu tine.
+      </p>
     </header>
 
-    <section class="intro">
-      <div class="intro-split">
-        <div class="intro-card">
-          <h2 id="intro-title">Happy Birthday, Vlad! 🎉</h2>
-          <p id="intro-text" class="subtitle">I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year). You can edit this text in the CONFIG below or right here.</p>
-        </div>
-        <div class="intro-photo">
-          <img src="assets/vladmic1.jpg" alt="Vlad" />
-        </div>
-      </div>
-    </section>
+    <!-- Scrollable reasons -->
+    <main class="sections" id="reasons-sections"></main>
 
-    <main class="grid" id="reasons-grid"></main>
-
-    <footer>
-      <p class="small">Made with ❤️ by <span id="yourName">Your Name</span>. <span class="small mono">OhMyVlad v3.0</span></p>
-    </footer>
+    <footer>Made with ❤️ by Olivia · OhMyVlad v5.0</footer>
   </div>
 
-  <div class="reason-modal" id="reason-modal">
-    <div class="reason-content">
-      <h2 id="modal-title"></h2>
-      <p id="modal-blurb"></p>
-      <div id="modal-notes"></div>
-      <div class="reason-gallery" id="modal-gallery"></div>
-      <button class="close-btn" id="closeModal">Close</button>
-    </div>
-  </div>
+  <script>
+    // ===== Helpers =====
+    function rangeFiles(prefix, start, end, ext="jpg"){
+      const out = [];
+      for(let i=start;i<=end;i++) out.push(`assets/${prefix}${i}.${ext}`);
+      return out;
+    }
+    function makeReason({title, lead, images}) {
+      const sec = document.createElement('section');
+      sec.className = 'reason';
 
-<script>
-  const YOUR_NAME = "Olivia";
-  const CONFIG = { reasons: [] };
-  document.getElementById('yourName').textContent = YOUR_NAME;
+      const h2 = document.createElement('h2');
+      h2.textContent = title;
+      sec.appendChild(h2);
 
-  const grid=document.getElementById('reasons-grid');
-  for(let i=1;i<=16;i++){
-    grid.appendChild(createCard({id:`reason-${i}`, title:`Reason #${i}`}, i-1));
-  }
+      const p = document.createElement('p');
+      p.className = 'lead';
+      p.textContent = lead || "";
+      sec.appendChild(p);
 
-  function createCard(reason){
-    const card=document.createElement('section');
-    card.className='section-card'; card.id=reason.id;
-    card.innerHTML=`<h2>${reason.title}</h2>`;
-    card.addEventListener('click',()=>{
-      modalTitle.textContent = reason.title;
-      modalBlurb.textContent = '';
-      modalNotes.innerHTML='';
-      modalGallery.innerHTML='';
-      modal.style.display='block';
-    });
-    return card;
-  }
+      if (images && images.length){
+        const gal = document.createElement('div');
+        gal.className = 'gallery';
+        images.forEach(src => {
+          const img = document.createElement('img');
+          img.loading = 'lazy';
+          img.alt = 'photo';
+          img.src = src;
+          // If a file is missing, remove the broken img silently.
+          img.onerror = () => img.remove();
+          gal.appendChild(img);
+        });
+        sec.appendChild(gal);
+      }
+      return sec;
+    }
 
-  const modal=document.getElementById('reason-modal');
-  const modalTitle=document.getElementById('modal-title');
-  const modalBlurb=document.getElementById('modal-blurb');
-  const modalNotes=document.getElementById('modal-notes');
-  const modalGallery=document.getElementById('modal-gallery');
-  document.getElementById('closeModal').onclick=()=>modal.style.display='none';
-</script>
+    // ===== Your 16 reasons =====
+    const reasons = [
+      {
+        title: "Reason #1 — because you are my best friend",
+        lead: "(Las spațiu pentru text aici.)",
+        images: rangeFiles("b", 1, 22, "jpg") // b1.jpg ... b22.jpg
+      },
+      {
+        title: "Reason #2 — because you are the hottest",
+        lead: "(Las spațiu pentru text aici.)",
+        images: rangeFiles("h", 1, 9, "jpg")  // h1.jpg ... h9.jpg
+      },
+      {
+        title: "Reason #3 — because you are the best chef",
+        lead: "(Las spațiu pentru text aici.)",
+        images: rangeFiles("ch", 1, 14, "jpg") // ch1.jpg ... ch14.jpg
+      },
+      {
+        title: "Reason #4 — you spoil me with flowers",
+        lead: "(Las spațiu pentru text aici.)",
+        images: rangeFiles("f", 1, 9, "jpg")   // f1.jpg ... f9.jpg
+      },
+      {
+        title: "Reason #5 — because you are the cutest goofball",
+        lead: "(Las spațiu pentru text aici.)",
+        images: rangeFiles("gf", 1, 9, "jpg")  // gf1.jpg ... gf9.jpg
+      },
+      { title: "Reason #6",  lead: "(text aici)", images: [] },
+      { title: "Reason #7",  lead: "(text aici)", images: [] },
+      { title: "Reason #8",  lead: "(text aici)", images: [] },
+      { title: "Reason #9",  lead: "(text aici)", images: [] },
+      { title: "Reason #10", lead: "(text aici)", images: [] },
+      { title: "Reason #11", lead: "(text aici)", images: [] },
+      { title: "Reason #12", lead: "(text aici)", images: [] },
+      { title: "Reason #13", lead: "(text aici)", images: [] },
+      { title: "Reason #14", lead: "(text aici)", images: [] },
+      { title: "Reason #15", lead: "(text aici)", images: [] },
+      { title: "Reason #16", lead: "(text aici)", images: [] }
+    ];
+
+    // ===== Render =====
+    const root = document.getElementById('reasons-sections');
+    reasons.forEach(r => root.appendChild(makeReason(r)));
+  </script>
 </body>
 </html>
