@@ -7,59 +7,73 @@
   <meta name="description" content="A tiny love site for Vlad — galleries, notes, and reasons he’s the best." />
   <style>
     :root{
-      --bg:#0f0f14; --card:#1c1224; --text:#f5f7ff; --muted:#a9b0c6;
-      --accent:#c084fc; --accent-2:#f97316; --heart:#ff5d8f; --warning:#ffd36b;
+      --bg:#1B1612; 
+      --text:#f5f7ff; 
+      --muted:#a9b0c6;
+      --copper:#B87333; 
+      --teal:#66C1BB;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; background: radial-gradient(1200px 800px at 10% -10%, #1a1a27 0%, transparent 60%), radial-gradient(1200px 800px at 100% 10%, #151522 0%, transparent 60%), var(--bg); color:var(--text); overflow-x:hidden}
+    body{
+      margin:0; 
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg); 
+      color:var(--text); 
+      overflow-x:hidden
+    }
 
     .wrap{max-width:1300px; margin:0 auto; padding:0 28px}
 
-    header{padding:84px 0 18px; text-align:center}
-    h1{font-size:clamp(40px,6.2vw,72px); line-height:1.05; margin:0 0 12px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
-    .subtitle{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
+    header{padding:84px 0 18px; text-align:center; border-bottom:2px solid var(--copper); margin-bottom:30px}
+    h1{font-size:clamp(40px,6.2vw,72px); line-height:1.05; margin:0 0 12px; color:var(--copper)}
+    .subtitle{color:var(--teal); font-size:clamp(14px,2.6vw,18px)}
 
-    .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:26px 0 10px}
-    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:white; padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:600; letter-spacing:.2px; transition:transform .15s ease, opacity .15s ease}
-    .btn:hover{transform:translateY(-2px); opacity:0.9}
-
-    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
+    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:40px; border-top:2px solid var(--teal); padding-top:30px}
     @media (max-width: 980px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width: 580px){.grid{grid-template-columns:1fr}}
-    .section-card{background:#0a0a0a; border:1.5px solid #0f5132; border-radius:20px; padding:26px; min-height:120px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; cursor:pointer}
-    .section-card:hover{transform:translateY(-2px); border-color:#198754; box-shadow:0 10px 20px rgba(0,0,0,.25)}
-    .section-card h2{margin:0; font-size:22px; letter-spacing:.3px}
-    .count-pill{display:none} /* hidden in this version */
-    .section-card h2{margin:0 0 8px; font-size:24px}
-    .section-card p{margin:0 0 8px; color:var(--muted)}
-    .pill{font-size:12px; color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent-2)); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block; margin-bottom:8px}
 
-    .count-pill{position:absolute; top:10px; right:12px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
+    .section-card{
+      background:#0a0a0a; 
+      border:2px solid var(--copper);
+      border-radius:20px; 
+      padding:26px; 
+      min-height:120px; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      text-align:center; 
+      cursor:pointer;
+      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .section-card:hover{
+      transform:translateY(-2px); 
+      border-color:var(--teal); 
+      box-shadow:0 10px 20px rgba(0,0,0,.25);
+    }
+    .section-card h2{margin:0; font-size:22px; color:var(--teal)}
 
     .reason-modal{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; z-index:100; overflow-y:auto; padding:40px 20px}
-    .reason-content{background:#1a1a27; border-radius:20px; max-width:900px; margin:0 auto; padding:30px; animation:fadeIn .3s ease}
-    .reason-content h2{margin-top:0; font-size:28px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+    .reason-content{background:#1a1a27; border-radius:20px; max-width:900px; margin:0 auto; padding:30px; animation:fadeIn .3s ease; border:2px solid var(--copper)}
+    .reason-content h2{margin-top:0; font-size:28px; color:var(--copper)}
     .reason-gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-top:16px}
-    .reason-gallery img{width:100%; border-radius:12px; cursor:pointer}
-    .close-btn{margin-top:20px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:#fff; padding:10px 16px; border-radius:12px; cursor:pointer}
+    .reason-gallery img{width:100%; border-radius:12px; cursor:pointer; border:1px solid var(--teal)}
+    .close-btn{margin-top:20px; background:var(--teal); border:none; color:#000; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600}
 
     @keyframes fadeIn{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
 
     .intro{margin:10px 0 24px}
     .intro-split{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:center}
-    .intro-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px}
-    .intro-card h2{margin:0 0 8px}
-    .intro-photo img{width:100%; border-radius:22px; border:1px solid rgba(255,255,255,.08); object-fit:cover; max-height:300px}
-    .intro-card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:22px}
-    .intro-card h2{margin:0 0 8px}
+    .intro-card{background:#0a0a0a; border:2px solid var(--teal); border-radius:22px; padding:22px}
+    .intro-card h2{margin:0 0 8px; color:var(--copper)}
+    .intro-photo img{width:100%; border-radius:22px; border:2px solid var(--copper); object-fit:cover; max-height:300px}
     .collage{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-top:14px}
-    .collage img{width:100%; height:120px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08); cursor:pointer}
+    .collage img{width:100%; height:120px; object-fit:cover; border-radius:12px; border:2px solid var(--teal); cursor:pointer}
 
-    footer{padding:30px 0 80px; text-align:center; color:var(--muted)}
+    footer{padding:30px 0 80px; text-align:center; color:var(--muted); border-top:2px solid var(--copper); margin-top:40px}
     .small{font-size:12px; color:var(--muted)}
 
-    .heart{position:fixed; font-size:16px; color:var(--heart); pointer-events:none; animation:float 1.6s ease-out forwards}
+    .heart{position:fixed; font-size:16px; color:var(--copper); pointer-events:none; animation:float 1.6s ease-out forwards}
     @keyframes float{0%{transform:translateY(0) scale(.9); opacity:1} 100%{transform:translateY(-80px) scale(1.3); opacity:0}}
   </style>
 </head>
@@ -67,19 +81,7 @@
   <div class="wrap">
     <header>
       <h1>Why Vlad Is The Best <span style="white-space:nowrap">Person Ever</span></h1>
-      <p class="subtitle">A growing archive of love: reasons, memories, screenshots, and tiny galleries. Built with affection and caffeine. ✨</p>
-      <div class="cta">
-        <button class="btn" data-jump="#supportive">Supportive</button>
-        <button class="btn" data-jump="#smartest">Smartest</button>
-        <button class="btn" data-jump="#involved">Most involved</button>
-        <button class="btn" data-jump="#movies">Movie taste</button>
-        <button class="btn" data-jump="#food">Gastronomy</button>
-        <button class="btn" data-jump="#music">Music expansion</button>
-        <button class="btn" data-jump="#snacks">Snack fairy</button>
-        <button class="btn" data-jump="#flowers">Bouquets</button>
-        <button class="btn" data-jump="#kiddo">Baby Vlad</button>
-      </div>
-      <p class="small">You have been awesome for <span id="dayCounter">X</span> days.</p>
+      <p class="subtitle">Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa prețios, dar am să încerc aici măcar câteva să le împărtășesc cu tine. </p>
     </header>
 
     <section class="intro">
@@ -113,45 +115,15 @@
 
 <script>
   const YOUR_NAME = "Olivia";
-  const VLAD_BIRTHDATE = "1998-09-18";
-
-  const CONFIG = {
-    introTitle: "Happy Birthday, Vlad! 🎉",
-    introText: "I built this little website because… (edit this text in CONFIG.introText).",
-    collageImages: [],
-    reasons: []
-  };
-
+  const CONFIG = { reasons: [] };
   document.getElementById('yourName').textContent = YOUR_NAME;
 
-  // Intro content + collage
-  const introTitleEl = document.getElementById('intro-title');
-  const introTextEl  = document.getElementById('intro-text');
-  if(introTitleEl) introTitleEl.textContent = CONFIG.introTitle || introTitleEl.textContent;
-  if(introTextEl)  introTextEl.textContent  = CONFIG.introText  || introTextEl.textContent;
-  const collageEl = document.getElementById('collage');
-  if(collageEl && Array.isArray(CONFIG.collageImages)){
-    CONFIG.collageImages.forEach(src=>{
-      const img = document.createElement('img');
-      img.src = src; img.alt = 'collage photo'; img.loading = 'lazy';
-      img.addEventListener('click', ()=> openLightbox(src));
-      collageEl.appendChild(img);
-    });
-  }
-  function daysSince(dateStr){const start=new Date(dateStr+'T00:00:00');const now=new Date();const diff=Math.floor((now-start)/(1000*60*60*24));return new Intl.NumberFormat().format(diff);} 
-  document.getElementById('dayCounter').textContent = daysSince(VLAD_BIRTHDATE);
-
-  document.getElementById('intro-title').textContent = CONFIG.introTitle;
-  document.getElementById('intro-text').textContent = CONFIG.introText;
-  CONFIG.collageImages.forEach(src=> addImg(document.getElementById('collage'),src));
-
   const grid=document.getElementById('reasons-grid');
-  // Build 16 placeholder cards labelled Reason #n
   for(let i=1;i<=16;i++){
     grid.appendChild(createCard({id:`reason-${i}`, title:`Reason #${i}`}, i-1));
   }
 
-  function createCard(reason,idx){
+  function createCard(reason){
     const card=document.createElement('section');
     card.className='section-card'; card.id=reason.id;
     card.innerHTML=`<h2>${reason.title}</h2>`;
@@ -171,49 +143,6 @@
   const modalNotes=document.getElementById('modal-notes');
   const modalGallery=document.getElementById('modal-gallery');
   document.getElementById('closeModal').onclick=()=>modal.style.display='none';
-
-  function openModal(reason){
-    modalTitle.textContent=reason.title;
-    modalBlurb.textContent=reason.blurb;
-    modalNotes.innerHTML='';
-    reason.notes.forEach(n=>{const d=document.createElement('div');d.className='reason';d.textContent=n;modalNotes.appendChild(d)});
-    modalGallery.innerHTML='';
-    reason.gallery.forEach(src=> addImg(modalGallery,src));
-    modal.style.display='block';
-  }
-
-  function addImg(container,src){
-    const img=document.createElement('img'); img.src=src; img.alt='photo'; img.loading='lazy';
-    img.onclick=()=>{const lb=document.createElement('div');lb.className='lightbox';lb.innerHTML=`<img src="${src}"/>`;document.body.appendChild(lb);lb.onclick=()=>lb.remove();};
-    container.appendChild(img);
-  }
-
-  function heartBurst(x,y){for(let i=0;i<6;i++){const h=document.createElement('div');h.className='heart';h.textContent='❤';h.style.left=(x+(Math.random()*40-20))+'px';h.style.top=(y+(Math.random()*20-10))+'px';h.style.transform=`translateY(0) scale(${0.8+Math.random()*0.6})`;document.body.appendChild(h);setTimeout(()=>h.remove(),1600);}}
-  document.addEventListener('click',e=>{if(!e.target.closest('.lightbox')&&!e.target.closest('.btn')&&!e.target.closest('input'))heartBurst(e.clientX,e.clientY)});
-  // Detail fullscreen modal
-  const detail = document.getElementById('detailModal');
-  const closeDetailBtn = document.getElementById('closeDetail');
-  const detailTitle = document.getElementById('detailTitle');
-  const detailBlurb = document.getElementById('detailBlurb');
-  const detailNotes = document.getElementById('detailNotes');
-  const detailGallery = document.getElementById('detailGallery');
-
-  function clearChildren(el){ while(el && el.firstChild) el.removeChild(el.firstChild); }
-  function openDetail(reason, idx){
-    if(!detail) return;
-    detailTitle.textContent = `Reason #${idx+1} — ${reason.title}`;
-    detailBlurb.textContent = reason.blurb || '';
-    clearChildren(detailNotes); clearChildren(detailGallery);
-    (reason.notes||[]).forEach(txt=>{
-      const d = document.createElement('div'); d.className='reason'; d.textContent = txt; detailNotes.appendChild(d);
-    });
-    (reason.gallery||[]).forEach(src=>{
-      const img = document.createElement('img'); img.src = src; img.alt = 'photo'; img.loading='lazy'; img.addEventListener('click', ()=> openLightbox(src)); detailGallery.appendChild(img);
-    });
-    detail.style.display = 'grid';
-  }
-  if(closeDetailBtn) closeDetailBtn.addEventListener('click', ()=>{ detail.style.display='none'; });
-  if(detail) detail.addEventListener('click', (e)=>{ if(e.target.id==='detailModal') detail.style.display='none'; });
 </script>
 </body>
 </html>
