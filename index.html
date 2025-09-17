@@ -400,10 +400,11 @@
       }
     
       // === SPECIAL SPLIT LAYOUT (Reason #2) ===
+      // === SPECIAL SPLIT LAYOUT (Reason #2) ===
       if (songSplit) {
         const split = document.createElement('div');
         split.className = 'split';
-    
+      
         // left: spotify + lyrics (+ optional Tenor)
         const left = document.createElement('div');
         if (spotify){
@@ -433,17 +434,10 @@
           left.appendChild(wrap);
           ensureTenor();
         }
-    
+      
         // right: photo grid
         const right = document.createElement('div');
         if (images && images.length){
-        if (/Reason #1/.test(title)) {
-          sec.appendChild(buildQuiltGallery(images));   // quilt for #1
-        } else if (/Reason #3/.test(title)) {
-          // NEW: readable screenshot rows for #3
-          sec.appendChild(buildScreenshotRows(images, 220)); // tweak height if you want
-        } else {
-          // default grid for all others
           const gal = document.createElement('div');
           gal.className = 'gallery';
           images.forEach(src => {
@@ -455,9 +449,15 @@
             img.addEventListener('click', ()=> openLightbox(src));
             gal.appendChild(img);
           });
-          sec.appendChild(gal);
+          right.appendChild(gal);
         }
+      
+        split.appendChild(left);
+        split.appendChild(right);
+        sec.appendChild(split);
+        return sec; // important — return here so the rest isn’t run
       }
+
 
     
       // === DEFAULT (non-split) REASONS ===
