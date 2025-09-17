@@ -10,8 +10,8 @@
       --bg:#0f0f14;
       --text:#f7f8ff;
       --muted:#a9b0c6;
-      --purple:#a78bfa;
-      --blue:#60a5fa;
+      --purple:#a78bfa;   /* lavender */
+      --blue:#60a5fa;     /* sky blue */
       --card:#121320;
       --ring:#2b2f45;
     }
@@ -37,13 +37,27 @@
     }
     .subtitle{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
 
+    /* sections layout */
     main.sections{display:flex; flex-direction:column; gap:36px; margin:36px 0 64px}
 
+    /* reason block – prettier */
     .reason{
+      position:relative;
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
       border:1px solid var(--ring);
       border-radius:22px;
       padding:22px;
+      overflow:hidden;
+    }
+    .reason:before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius:24px;
+      pointer-events:none;
+      background:linear-gradient(90deg, rgba(167,139,250,.35), rgba(96,165,250,.35));
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      padding:1px;
     }
     .reason h2{
       margin:0 0 6px; font-size:26px;
@@ -52,6 +66,7 @@
     }
     .reason .lead{color:var(--muted); margin:6px 0 14px}
 
+    /* galleries */
     .gallery{
       display:grid;
       grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -61,101 +76,137 @@
       width:100%; height:180px; object-fit:cover;
       border-radius:12px; border:1px solid var(--ring);
       background:#0c0d16;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 0 0 rgba(0,0,0,0);
+      cursor:pointer;
+    }
+    .gallery img:hover{
+      transform:translateY(-2px) scale(1.015);
+      box-shadow:0 10px 22px rgba(96,165,250,.20);
     }
     @media (max-width:640px){ .gallery img{height:140px} }
 
-    /* Happy birthday & closing note blocks */
+    /* Happy birthday & closing panel */
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
       border:1px solid rgba(255,255,255,.08);
       border-radius:22px; padding:26px;
     }
-    .closing{
-      background:linear-gradient(180deg, rgba(96,165,250,.10), rgba(167,139,250,.06));
-      border:1px solid rgba(96,165,250,.30);
-    }
-    .closing h2{
-      margin-top:0;
+    .intro h2{
+      margin:0 0 8px;
       background:linear-gradient(90deg,var(--purple),var(--blue));
       -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
 
+    /* divider */
+    .divider{
+      height:2px; border-radius:999px; margin:30px 0;
+      background:linear-gradient(90deg, transparent, var(--purple), var(--blue), transparent);
+      opacity:.7;
+    }
+
     footer{padding:26px 0 60px; text-align:center; color:var(--muted); font-size:14px}
+
+    /* Lightbox */
+    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; place-items:center; z-index:60}
+    .lightbox img{max-width:92vw; max-height:86vh; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .lightbox.show{display:grid}
+
+    /* Scroll reveal */
+    .reveal{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease}
+    .reveal.show{opacity:1; transform:none}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>Why Vlad Is The Best Person Ever</h1>
-      
+      <p class="subtitle">
+        Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa
+        prețios, dar am să încerc aici măcar câteva să le împărtășesc cu tine.
+      </p>
     </header>
 
     <!-- Scrollable reasons -->
     <main class="sections" id="reasons-sections"></main>
 
-    <!-- Happy Birthday block (kept near the end as you wanted) -->
+    <!-- Pretty divider -->
+    <div class="divider"></div>
+
+    <!-- Happy Birthday block AT THE END (with your closing text inside) -->
     <section class="intro" style="margin:80px 0;">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start;">
         <div class="panel">
-          <h2 style="margin-top:0;">La mulți ani fericit, scumpetea mea</h2>
-          <p>I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year).</p>
+          <h2>La mulți ani fericit, scumpetea mea</h2>
+          <p>
+            I have written 12 reasons here due to time constraints but if I was a monkey infinitely typing on a typewriter I would still need 1 billion years to count all the reasons why you are such a precious and wholesome person who I am lucky to call my best friend ♥️
+          </p>
+          <p>
+            With this said, today is the day we celebrate you, my love ♥️ I wish for you all the best this silly little life has to offer — a lot of laughter, a lot of love and a lot of peace and bliss (or what they call <em>a sweet sublime</em> ;))
+          </p>
+          <p>
+            Îți doresc să ai cât mai mult timp pentru suflețelul tău — timp cu oamenii dragi, timp pentru scris poezii, timp pentru ascultat muzică la boxă ♥️
+          </p>
+          <p>
+            I wish you lots of luck for facing life head on. I know you’ve got this, and I will always be here by your side ♥️
+          </p>
+          <p>
+            Twenty seven might seem like a scary number, but I’m sure the key is to take care of the smol Vlad inside of you so that the 27 adult can thrive ♥️ I will do my best to take care of your inner kid just as much.
+          </p>
+          <p>
+            I hope that as years go by you will grow to be excited for this day at least a little bit as much as me ♥️♥️♥️
+          </p>
+          <p>
+            La mulți ani, scumpetea mea! ♥️ <br/>
+            Te iubesc total ♥️♥️♥️
+          </p>
         </div>
         <div>
           <img src="assets/pusea4.jpg" alt="Vlad mic"
-               style="width:100%; border-radius:22px; border:1px solid rgba(255,255,255,.08); object-fit:cover; max-height:400px"/>
+               style="width:100%; border-radius:22px; border:1px solid rgba(255,255,255,.12); object-fit:cover; max-height:520px"/>
         </div>
       </div>
     </section>
 
-    <!-- Final closing note (this appears LAST) -->
-    <section class="panel closing" style="margin:40px 0 10px;">
-      <h2>One last thing… ♥️</h2>
-      <p>
-        I have written 12 reasons here due to time constraints but if I was a monkey infinitely typing on a typewriter I would still need 1 billion years to count all the reasons why you are such a precious and wholesome person who I am lucky to call my best friend ♥️
-      </p>
-      <p>
-        With this said, today is the day we celebrate you, my love ♥️ I wish for you all the best this silly little life has to offer — a lot of laughter, a lot of love and a lot of peace and bliss (or what they call <em>a sweet sublime</em> ;))
-      </p>
-      <p>
-        Îți doresc să ai cât mai mult timp pentru suflețelul tău — timp cu oamenii dragi, timp pentru scris poezii, timp pentru ascultat muzică la boxă ♥️
-      </p>
-      <p>
-        I wish you lots of luck for facing life head on. I know you’ve got this, and I will always be here by your side ♥️
-      </p>
-      <p>
-        Twenty seven might seem like a scary number, but I’m sure the key is to take care of the smol Vlad inside of you so that the 27 adult can thrive ♥️ I will do my best to take care of your inner kid just as much.
-      </p>
-      <p>
-        I hope that as years go by you will grow to be excited for this day at least a little bit as much as me ♥️♥️♥️
-      </p>
-      <p>
-        La mulți ani, scumpetea mea! ♥️ <br/>
-        Te iubesc total ♥️♥️♥️
-      </p>
-    </section>
-
-    <footer>Te iubesc! · OhMyVlad v5.1</footer>
+    <footer>Te iubesc! · OhMyVlad v5.2</footer>
   </div>
 
+  <!-- Lightbox root -->
+  <div class="lightbox" id="lb"><img alt="zoomed" /></div>
+
   <script>
-    // helpers
+    // ===== Helpers =====
     function rangeFiles(prefix, start, end, ext="jpg"){
       const out = [];
       for(let i=start;i<=end;i++) out.push(`assets/${prefix}${i}.${ext}`);
       return out;
     }
-    function makeReason({title, lead, images}) {
+    function makeReason({title, lead, images, spotify}){
       const sec = document.createElement('section');
-      sec.className = 'reason';
+      sec.className = 'reason reveal';
 
       const h2 = document.createElement('h2');
       h2.textContent = title;
       sec.appendChild(h2);
 
-      const p = document.createElement('p');
-      p.className = 'lead';
-      p.textContent = lead || "";
-      sec.appendChild(p);
+      if (lead){
+        const p = document.createElement('p');
+        p.className = 'lead';
+        p.textContent = lead;
+        sec.appendChild(p);
+      }
+
+      if (spotify){
+        const frame = document.createElement('iframe');
+        frame.style.borderRadius = '12px';
+        frame.width = '100%';
+        frame.height = '152';
+        frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        frame.loading = 'lazy';
+        frame.src = spotify; // full embed URL
+        frame.title = 'Spotify player';
+        sec.appendChild(frame);
+      }
 
       if (images && images.length){
         const gal = document.createElement('div');
@@ -166,6 +217,7 @@
           img.alt = 'photo';
           img.src = src;
           img.onerror = () => img.remove();
+          img.addEventListener('click', ()=> openLightbox(src));
           gal.appendChild(img);
         });
         sec.appendChild(gal);
@@ -173,7 +225,17 @@
       return sec;
     }
 
-    // exactly 11 reasons (your texts)
+    // ===== Lightbox =====
+    const lb = document.getElementById('lb');
+    const lbImg = lb.querySelector('img');
+    function openLightbox(src){ lbImg.src = src; lb.classList.add('show'); }
+    lb.addEventListener('click', ()=>{ lb.classList.remove('show'); lbImg.src=''; });
+
+    // ===== Scroll reveal =====
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+    }, {threshold: .12});
+    // ===== Your 11 reasons =====
     const reasons = [
       {
         title: `Reason #1 — Because he has been the bestest friend to me. ♥️`,
@@ -185,6 +247,7 @@ Mulțumesc, scumpetea mea ♥️ Viața e mai ușoară când mă ții de mână.
         title: `Reason #2 — Because he is the hottest 😋`,
         lead: `(Self explanatory — just look at the pictures 😋)
 Ești cel mai frumos, Vlad, mă topesc în ochii tăi sincer. Dar când te dezbraci… mmmmm 🤤 mi se face foame scriind…`,
+        spotify: "https://open.spotify.com/embed/track/2CRq9NKMcGyIH0wjmYOy0H?utm_source=generator",
         images: rangeFiles("h", 1, 9, "jpg")
       },
       {
@@ -239,7 +302,11 @@ Thank you for opening up this world to me and for taking the time and effort to 
     ];
 
     const root = document.getElementById('reasons-sections');
-    reasons.forEach(r => root.appendChild(makeReason(r)));
+    reasons.forEach(r => {
+      const el = makeReason(r);
+      root.appendChild(el);
+      io.observe(el);
+    });
   </script>
 </body>
 </html>
