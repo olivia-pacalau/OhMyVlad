@@ -557,18 +557,15 @@
       const sec = document.createElement('section');
       sec.className = 'reason reveal';
     
-      // Custom renderer escape hatch
       if (typeof customRender === 'function') {
         customRender(sec, images);
         return sec;
       }
     
-      // Title
       const h2 = document.createElement('h2');
       h2.textContent = title;
       sec.appendChild(h2);
     
-      // Lead
       if (lead){
         const p = document.createElement('p');
         p.className = 'lead';
@@ -665,7 +662,7 @@
         sec.appendChild(img);
     
       } else if (/Reason #3/.test(title) && images.length) {
-        sec.appendChild(buildScreenshotRows(images, 150)); // smaller
+        sec.appendChild(buildScreenshotRows(images, 150)); // smaller row height
     
       } else if (/Reason #11/.test(title) && images.length) {
         const gal = document.createElement('div');
@@ -685,7 +682,6 @@
         sec.appendChild(buildFoodMosaic(images, hero));
     
       } else if (images.length) {
-        // Default gallery
         const gal = document.createElement('div');
         gal.className = 'gallery';
         images.forEach(src=>{
@@ -702,6 +698,8 @@
     
       return sec;
     }
+
+    
 
     
 
