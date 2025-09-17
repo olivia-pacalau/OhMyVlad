@@ -221,6 +221,34 @@
     @media (max-width:700px){
       .pola.s, .pola.m, .pola.l { grid-column: span 12; height:210px; }
     }
+    /* Reason #3: full-width readable screenshots in tidy rows */
+    .jgrid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .shot{
+      flex:0 0 auto;         /* don't stretch */
+      height:220px;          /* row height (tweak 180–240) */
+      border:1px solid var(--ring);
+      border-radius:12px;
+      overflow:hidden;
+      background:#0c0d16;
+      transition:transform .18s ease, box-shadow .18s ease;
+      cursor:pointer;
+    }
+    .shot:hover{
+      transform:translateY(-2px) scale(1.015);
+      box-shadow:0 10px 22px rgba(96,165,250,.20);
+    }
+    .shot img{
+      height:100%;
+      width:auto;            /* keep full image, no crop */
+      display:block;
+    }
+    @media (max-width:600px){
+      .shot{ height:170px; } /* smaller on phones */
+    }
 
   </style>
 </head>
@@ -262,6 +290,29 @@
   <div class="lightbox" id="lb"><img alt="zoomed" /></div>
 
   <script>
+
+    // Build a readable screenshot row grid (no cropping)
+    function buildScreenshotRows(images, rowHeight=220){
+      const wrap = document.createElement('div');
+      wrap.className = 'jgrid';
+      images.forEach(src=>{
+        const frame = document.createElement('div');
+        frame.className = 'shot';
+        frame.style.height = rowHeight + 'px';
+    
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'screenshot';
+        img.loading = 'lazy';
+        img.onerror = () => frame.remove();
+        img.addEventListener('click', ()=> openLightbox(src));
+    
+        frame.appendChild(img);
+        wrap.appendChild(frame);
+      });
+      return wrap;
+    }
+
 
     function buildQuiltGallery(images){
       const quilt = document.createElement('div');
@@ -386,6 +437,13 @@
         // right: photo grid
         const right = document.createElement('div');
         if (images && images.length){
+        if (/Reason #1/.test(title)) {
+          sec.appendChild(buildQuiltGallery(images));   // quilt for #1
+        } else if (/Reason #3/.test(title)) {
+          // NEW: readable screenshot rows for #3
+          sec.appendChild(buildScreenshotRows(images, 220)); // tweak height if you want
+        } else {
+          // default grid for all others
           const gal = document.createElement('div');
           gal.className = 'gallery';
           images.forEach(src => {
@@ -397,14 +455,10 @@
             img.addEventListener('click', ()=> openLightbox(src));
             gal.appendChild(img);
           });
-          right.appendChild(gal);
+          sec.appendChild(gal);
         }
-    
-        split.appendChild(left);
-        split.appendChild(right);
-        sec.appendChild(split);
-        return sec;  // IMPORTANT: exits here, so quilt change below doesn't run
       }
+
     
       // === DEFAULT (non-split) REASONS ===
       if (spotify){
