@@ -1,217 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Why Vlad Is The Best Person Ever — OhMyVlad</title>
-  <meta name="description" content="A tiny love site for Vlad — reasons, text, and image galleries, all in one scroll." />
-  <style>
-    .wrap{max-width:1400px; margin:0 auto; padding:0 20px}
-    :root{
-      /* Deep night + lively accents */
-      --bg:#0f0f14;
-      --text:#f7f8ff;
-      --muted:#a9b0c6;
+<script>
+  // ===== Helpers =====
+  function rangeFiles(prefix, start, end, ext = "jpg") {
+    const out = [];
+    for (let i = start; i <= end; i++) out.push(`assets/${prefix}${i}.${ext}`);
+    return out;
+  }
+  function makeReason({ title, lead, images }) {
+    const sec = document.createElement('section');
+    sec.className = 'reason';
 
-      --purple:#a78bfa;   /* lavender */
-      --blue:#60a5fa;     /* sky blue */
+    const h2 = document.createElement('h2');
+    h2.textContent = title;
+    sec.appendChild(h2);
 
-      --card:#121320;     /* section bg */
-      --ring:#2b2f45;     /* subtle borders */
+    const p = document.createElement('p');
+    p.className = 'lead';
+    p.textContent = lead || "";
+    sec.appendChild(p);
+
+    if (images && images.length) {
+      const gal = document.createElement('div');
+      gal.className = 'gallery';
+      images.forEach(src => {
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.alt = 'photo';
+        img.src = src;
+        img.onerror = () => img.remove();
+        gal.appendChild(img);
+      });
+      sec.appendChild(gal);
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:
-        radial-gradient(900px 600px at 0% 0%, rgba(167,139,250,0.10), transparent 60%),
-        radial-gradient(900px 600px at 100% 10%, rgba(96,165,250,0.10), transparent 60%),
-        var(--bg);
-      color:var(--text);
-      overflow-x:hidden;
-    }
-    .wrap{max-width:1100px; margin:0 auto; padding:0 22px}
+    return sec;
+  }
 
-    header{padding:72px 0 24px; text-align:center; margin-bottom:18px}
-    h1{
-      font-size:clamp(40px,6.2vw,72px);
-      line-height:1.05; margin:0 0 12px;
-      background:linear-gradient(90deg,var(--purple),var(--blue));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .subtitle{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
+  // ===== Your 16 reasons (use backticks for multiline text) =====
+  const reasons = [
+    {
+      title: `Reason #1 — Because he has been the bestest friend to me. ♥️`,
+      lead: `He has been there for me for good times and for bad times, always down for an adventure, always down for a chill evening cuddled in bed, always down to help me, always thinking of how to make my life better and always there to help me think through any life struggle I might have. He is the embodiment of “through thick and thin”.
+Mulțumesc, scumpetea mea ♥️ Viața e mai ușoară când mă ții de mână.`,
+      images: rangeFiles("b", 1, 22, "jpg")
+    },
+    {
+      title: `Reason #2 — Because he is the hottest`,
+      lead: `(Self explanatory — just look at the pictures 😋)
+Ești cel mai frumos, Vlad, mă topesc în ochii tăi sincer. Dar când te dezbraci… mmmmm 🤤 mi se face foame scriind…`,
+      images: rangeFiles("h", 1, 9, "jpg")
+    },
+    {
+      title: `Reason #3 — Because he is the most supportive boyfriend ever`,
+      lead: `Simt că pot înfrunta munți când simt că te am alături și că o să mă susții mereu cu o încurajare, o cuprinzică sau un brainstorming session ♥️`,
+      images: []
+    },
+    {
+      title: `Reason #4 — Because he is, actually, more than just supportive — he is involved!!`,
+      lead: `M-ai ajutat atât de mult, iubirea mea 🥹
+Te-ai torturat cu PowerBI pentru mine, mi-ai făcut proiect de nota 10 la deep learning, m-ai ajutat la Danone mereu când aveam nevoie, and you had a hell of an input during the interview that got me this job — I have it because of you, ngl ♥️🥹 Mulțumesc mult ♥️`,
+      images: []
+    },
+    {
+      title: `Reason #5 — Because he is the best handy man!!!`,
+      lead: `Ai nevoie să te muți cu tot cu pat și dulap care trebuiesc dezasamblate și asamblate înapoi, sau să instalezi o lampă în perete de beton, sau să-ți repari bicicleta, sau orice altceva? Vlad poate 😁 Trebuie doar să-ți meargă să fii un om drag de-al lui și te va ajuta cu orice ♥️
+Mie mi-a mers taaaare 🫣♥️`,
+      images: []
+    },
+    {
+      title: `Reason #6 — Because he is the cutest goofball everrrr 🥹`,
+      lead: `I love life with you ♥️`,
+      images: []
+    },
+    {
+      title: `Reason #7 — Because he is relentless in showing me love`,
+      lead: `Luptă pentru noi chiar și în cele mai grele momente, când se trezește ego-ul meu încăpățânat. Nu voi lua asta niciodată de-a gata.`,
+      images: []
+    },
+    {
+      title: `Reason #8 — Because he is the best chef!!!!!`,
+      lead: `He always took the time to cook for us and he cooks the beeest food ever 🤤🤤🤤
+Scumpete, nu glumesc când zic că a fost life-changing să trec de la blând, boring food la umami și arome mai complexe 😭 Mulțumesc că m-ai introdus la ramen, la steakuri bune, la fine dining, dar cel mai important — la cum pot să fac home-made food să nu mai fie așa plictisitoare.
+Thank you for opening up this world to me and for taking the time and effort to cook so much for us ♥️🥺 Te apreciez enorm.`,
+      images: []
+    },
+    {
+      title: `Reason #9 — Because he always spoils me with flowers and snacks and gifts and makes me feel so loved`,
+      lead: `Știi tu cum să mă topești… 🫣♥️`,
+      images: []
+    },
+    {
+      title: `Reason #10 — Because he has the best taste in music and always shares his findings with me ♥️`,
+      lead: `From “I'm Into You” by Chet Faker to “Тени от пальм”, my Spotify got so much more diverse and so much better. I think Ruby Waters could be my top artist for 2025 and I wouldn’t have known her if it wasn’t for you 😁♥️`,
+      images: []
+    },
+    {
+      title: `Reason #11 — Because he is a hopeless romantic`,
+      lead: `With him, love feels like the kind you read about in books — tender, poetic, a little dramatic in the best way. He turns ordinary days into little love stories, and even the smallest gestures feel like pages from our own novel. 🥺♥️`,
+      images: []
+    },
+    { title: `Reason #12`, lead: `(text aici)`, images: [] },
+    { title: `Reason #13`, lead: `(text aici)`, images: [] },
+    { title: `Reason #14`, lead: `(text aici)`, images: [] },
+    { title: `Reason #15`, lead: `(text aici)`, images: [] },
+    { title: `Reason #16`, lead: `(text aici)`, images: [] }
+  ];
 
-       
-
-
-    /* vertical story layout */
-    main.sections{display:flex; flex-direction:column; gap:36px; margin:36px 0 64px}
-
-    /* each reason block */
-    .reason{
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
-      border:1px solid var(--ring);
-      border-radius:22px;
-      padding:22px;
-    }
-    .reason h2{
-      margin:0 0 6px; font-size:26px;
-      background:linear-gradient(90deg,var(--purple),var(--blue));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .reason .lead{color:var(--muted); margin:6px 0 14px}
-
-    /* galleries */
-    .gallery{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-      gap:10px;
-    }
-    .gallery img{
-      width:100%; height:180px; object-fit:cover;
-      border-radius:12px; border:1px solid var(--ring);
-      background:#0c0d16;
-    }
-    @media (max-width:640px){ .gallery img{height:140px} }
-
-    footer{padding:26px 0 60px; text-align:center; color:var(--muted); font-size:14px}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <h1>Why Vlad Is The Best Person Ever</h1>
-      <p class="subtitle">
-        Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa
-        prețios, dar am să încerc aici măcar câteva să le împărtășesc cu tine.
-      </p>
-    </header>
-
-    <!-- Scrollable reasons -->
-    <main class="sections" id="reasons-sections"></main>
-
-
-        <!-- Happy Birthday block at the end -->
-    <section class="intro" style="margin:80px 0;">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center;">
-        <div style="background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
-                    border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:26px;">
-          <h2 style="margin-top:0;">La multi ani fericit, scumpetea mea</h2>
-          <p>I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year) ahahahahhahahahahahahahahahahahahahahahha.</p>
-        </div>
-        <div>
-          <img src="assets/pusea4.jpg" alt="Vlad mic"
-               style="width:100%; border-radius:22px; border:1px solid rgba(255,255,255,.08); object-fit:cover; max-height:400px"/>
-        </div>
-      </div>
-    </section>
-
-
-  </div>
-
-  <script>
-    // ===== Helpers =====
-    function rangeFiles(prefix, start, end, ext="jpg"){
-      const out = [];
-      for(let i=start;i<=end;i++) out.push(`assets/${prefix}${i}.${ext}`);
-      return out;
-    }
-    function makeReason({title, lead, images}) {
-      const sec = document.createElement('section');
-      sec.className = 'reason';
-
-      const h2 = document.createElement('h2');
-      h2.textContent = title;
-      sec.appendChild(h2);
-
-      const p = document.createElement('p');
-      p.className = 'lead';
-      p.textContent = lead || "";
-      sec.appendChild(p);
-
-      if (images && images.length){
-        const gal = document.createElement('div');
-        gal.className = 'gallery';
-        images.forEach(src => {
-          const img = document.createElement('img');
-          img.loading = 'lazy';
-          img.alt = 'photo';
-          img.src = src;
-          // If a file is missing, remove the broken img silently.
-          img.onerror = () => img.remove();
-          gal.appendChild(img);
-        });
-        sec.appendChild(gal);
-      }
-      return sec;
-    }
-
-    // ===== Your 16 reasons =====
-    const reasons = [
-      {
-        title: "Reason #1 — Because he has been the bestest friend to me. ♥️",
-        lead: "He has been there for me for good times and for bad times, always down for an adventure, always down for a chill evening cuddled in bed, always down to help me, always thinking of how to make my life better and always there to help me think through any life struggle I might have. He is the embodiment of “through thick and thin”.
-        Mulțumesc, scumpetea mea ♥️ Viata e mai uşoară când mă ții de mână. 
-        ",
-        images: rangeFiles("b", 1, 10, "jpg") // b1.jpg ... b22.jpg
-      },
-      {
-        title: "Reason #2 — Because he is the hottest",
-        lead: "(Self explanatory - just look at the pictures 😋) 
-        Eşti cel mai frumos, Vlad, mă topesc în ochii tăi sincer. Dar când te dezbraci…..mmmmmm🤤 mi se face foame scriind…
-        ",
-        images: rangeFiles("h", 1, 9, "jpg")  // h1.jpg ... h9.jpg
-      },
-      {
-        title: "Reason #3 — Because he is the most supportive boyfriend ever",
-        lead: " Simt că pot înfrunta munți când simt că te am alături şi că o să mă susții mereu cu o încurajare, o cuprinzică sau un brainstorming session♥️ ,
-        images: []
-      },
-      {
-        title: "Reason #4 — Because he is, actually, more than just supportive - he is involved!!",
-        lead: "M-ai ajutat atât de mult, iubirea mea 🥹
-        Te-ai torturat cu PowerBI pentru mine, mi-ai făcut proiect de nota 10 la deep learning, m-ai ajutat la Danone mereu când aveam nevoie, and you had a hell of an input during the interview that got me this job - I have it because of you ngl ♥️🥹 Mulțumesc mult♥️
-        ",
-        images: []
-      },
-      {
-        title: "Reason #5 — Because he is the best handy man!!! ",
-        lead: "Ai nevoie să te muți cu tot cu pat şi dulap care trebuiesc dezasamblate şi asamblate înapoi, sau să instalezi o lampă în perete de beton, sau să-ți repari bicicleta, sau orice altceva ? Vlad poate 😁 trebuie doar să-ți meargă să fii un om drag de-al lui şi te va ajuta cu orice ♥️
-        mie mi-a mers taaaare 🫣♥️",
-        images: []
-      },
-      { title: "Reason #6 - Because he is the cutest goofball everrrr 🥹 ",
-        lead: "I love life with you ♥️",
-        images: []
-      },
-      { title: "Reason #7",  lead: "Because he is relentless in showing me that he loves me and he will fight for us, even during the toughest of fights when my stubborn alter ego wakes up. I will never take this for granted. ",
-        images: [] },
-      { title: "Reason #8 - Because he is the best chef!!!!!", 
-        lead: "He always took the time to cook for us and he cooks the beeest food ever🤤🤤🤤 Scumpete nu glumesc cand zic ca a fost life changing sa trec de la blând boring food la umami si flavouri mai complexe 😭 Mulțumesc că m-ai introdus la ramen, la steakuri bune, la fine dining dar cel mai important - la cum pot să fac home made food sa nu mai fie asa plictisitoare. 
-        Thank you for opening up this world to me and thank you for taking the time and effort to cook so much for us ♥️🥺 Te apreciez enorm. ",
-        images: [] },
-      { title: "Reason #9 - Because he always spoils me with flowers and snacks and gifts and makes me feel so loved.",
-        lead: "Ştii tu cum să mă topeşti…🫣♥️",
-        images: [] },
-      { title: "Reason #10 - Because he has the best taste in music and he always shares his findings with me ♥️",
-        lead: "From “I’m into you” by Chet Faker to “Тени от пальм”, my Spotify playlist has gotten so much more diverse  and so much better. I think Ruby Waters could be my top artist for 2025 and I wouldn’t have known her if it wasn’t for you 😁♥️ 
-        ", images: [] },
-      { title: "Reason #11 - Because he is a hopeless romantic.",
-        lead: "He makes love feel like the love you read about in books.🥺♥️
-        Thank you for making me get in touch with my romantic self and introducing poetry in my life. 
-        Here are the lyrics from a love song I really like 🫣", images: [] },
-      { title: "Reason #12", lead: "(text aici)", images: [] },
-      { title: "Reason #13", lead: "(text aici)", images: [] },
-      { title: "Reason #14", lead: "(text aici)", images: [] },
-      { title: "Reason #15", lead: "(text aici)", images: [] },
-      { title: "Reason #16", lead: "(text aici)", images: [] }
-    ];
-
-    // ===== Render =====
-    const root = document.getElementById('reasons-sections');
-    reasons.forEach(r => root.appendChild(makeReason(r)));
-  </script>
-</body>
-
-<footer> Te iubesc! · OhMyVlad v5.0</footer>
-</html>
+  // ===== Render =====
+  const root = document.getElementById('reasons-sections');
+  root.innerHTML = "";
+  reasons.forEach(r => root.appendChild(makeReason(r)));
+</script>
