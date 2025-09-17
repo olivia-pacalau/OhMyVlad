@@ -322,7 +322,49 @@
       width: 100%;
       border-radius: 16px;
       border: 1px solid var(--ring);
+      
     }
+
+        /* Reason #11: tall Spotify screenshots */
+    .tall-strip {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: nowrap;      /* keep all in one row, no wrapping */
+      overflow-x: auto;       /* scroll if too many for small screens */
+      padding-bottom: 8px;
+    }
+    
+    .tall-shot {
+      height: 300px;          /* tweak: 260–340px works well */
+      border-radius: 12px;
+      border: 1px solid var(--ring);
+      background: #0c0d16;
+      flex: 0 0 auto;         /* prevent them from stretching */
+      transition: transform .18s ease, box-shadow .18s ease;
+      cursor: pointer;
+    }
+    .tall-shot:hover {
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 0 10px 22px rgba(96,165,250,.20);
+    }
+    .tall-shot img {
+      height: 100%;
+      width: auto;            /* keep proportions */
+      display: block;
+    }
+    
+    .hero-image {
+      width: 100%;
+      max-height: 600px;     /* tweak: 500–700px if you want taller */
+      object-fit: cover;
+      border-radius: 20px;
+      border: 1px solid var(--ring);
+      display: block;
+      margin: 20px auto;
+    } 
+
+
 
 
   </style>
@@ -365,6 +407,24 @@
   <div class="lightbox" id="lb"><img alt="zoomed" /></div>
 
   <script>
+
+    function buildTallStrip(images, height=300){
+      const wrap = document.createElement('div');
+      wrap.className = 'tall-strip';
+      images.forEach(src=>{
+        const frame = document.createElement('div');
+        frame.className = 'tall-shot';
+        frame.style.height = height+'px';
+        const img = document.createElement('img');
+        img.src = src; img.loading='lazy'; img.alt='screenshot';
+        img.onerror = ()=> frame.remove();
+        img.addEventListener('click', ()=> openLightbox(src));
+        frame.appendChild(img);
+        wrap.appendChild(frame);
+      });
+      return wrap;
+    }
+
 
     function buildFoodMosaic(images, heroSrc){
       const grid = document.createElement('div');
@@ -511,8 +571,11 @@
         p.className = 'lead';
         p.innerHTML = lead;   // keep HTML for <strong> line
         sec.appendChild(p);
+        
       }
+
     
+
       // === SPECIAL SPLIT LAYOUT (Reason #2) ===
       if (songSplit) {
         const split = document.createElement('div');
@@ -586,9 +649,19 @@
     
       if (images && images.length){
         if (/Reason #1/.test(title)) {
-          sec.appendChild(buildQuiltGallery(images));
+          const img = document.createElement('img');
+          img.src = 'assets/bestie.png';    // your collage file
+          img.alt = 'Te iubesc;
+          img.className = 'hero-image';
+          img.loading = 'lazy';
+          img.addEventListener('click', ()=> openLightbox(img.src));
+          sec.appendChild(img);
+        }
         } else if (/Reason #3/.test(title)) {
           sec.appendChild(buildScreenshotRows(images, 220));
+        } else if (/Reason #11/.test(title)) {
+          sec.appendChild(buildTallStrip(images, 300));
+
         } else if (/Reason #8/.test(title) && hero){
           sec.appendChild(buildFoodMosaic(images, hero));
         } else {
@@ -630,7 +703,7 @@
       {
         title:`Reason #1 — Because he has been the bestest friend to me. ♥️`,
         lead:`He has been there for me for good times and for bad times, always down for an adventure, always down for a chill evening cuddled in bed, always down to help me, always thinking of how to make my life better and always there to help me think through any life struggle I might have. He is the embodiment of “through thick and thin”.<br><strong>Mulțumesc, scumpetea mea ♥️ Viața e mai ușoară când mă ții de mână.</strong>`,
-        images: ["assets/bestie.png"],
+        images: [],
       },
       {
         title: `Reason #2 — Because he is the hottest 😋`,
@@ -669,8 +742,8 @@ Mie mi-a mers taaaare 🫣♥️`,
       },
 
       { title:`Reason #9 — Because he always spoils me with flowers and snacks and gifts and makes me feel so loved`, lead:`Știi tu cum să mă topești… 🫣♥️`, images: rangeFiles("f", 1, 9, "jpg") },
-      { title:`Reason #10 — Because he has the best taste in music and always shares his findings with me ♥️`, lead:`From “I'm Into You” by Chet Faker to “Тени от пальм”, my Spotify got so much more diverse and so much better. I think Ruby Waters could be my top artist for 2025 and I wouldn’t have known her if it wasn’t for you 😁♥️`, images: rangeFiles("mus", 1, 8, "jpg") },
-      { title:`Reason #11 — Because he is a hopeless romantic`, lead:`He makes love feel like the one you read about in books. Thank you for making me get in touch with my romantic self and introducing poetry back into my life.  🥺♥️`, images:[] }
+      { title:`Reason #10 — Because he is a hopeless romantic`, lead:`He makes love feel like the one you read about in books. Thank you for making me get in touch with my romantic self and introducing poetry back into my life.  🥺♥️`, images:[]},
+      { title:`Reason #11 — Because he has the best taste in music and always shares his findings with me ♥️`, lead:`From “I'm Into You” by Chet Faker to “Тени от пальм”, my Spotify got so much more diverse and so much better. I think Ruby Waters could be my top artist for 2025 and I wouldn’t have known her if it wasn’t for you 😁♥️`, images: rangeFiles("mus", 1, 8, "jpg") }
     ];
 
     const root=document.getElementById('reasons-sections');
