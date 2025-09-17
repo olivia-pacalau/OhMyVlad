@@ -551,45 +551,68 @@
     }
 
     // Create each reason section
-    // Reason-specific rendering (robust by parsing the number)
-    const m = title.match(/Reason\s+#?(\d+)/i);
-    const reasonNum = m ? parseInt(m[1], 10) : null;
+    function makeReason({
+      title, lead, images = [], spotify, songSplit, lyrics, tenorPostId, hero, customRender
+    }){
+      // section root
+      const sec = document.createElement('section');
+      sec.className = 'reason reveal';
     
-    switch (reasonNum) {
-      case 1: {
-        const img = document.createElement('img');
-        img.src = 'assets/bestie.png';
-        img.alt = 'Te iubesc';
-        img.className = 'hero-image';
-        img.loading = 'lazy';
-        img.addEventListener('click', ()=> openLightbox(img.src));
-        sec.appendChild(img);
-        break;
+      // custom renderer escape hatch
+      if (typeof customRender === 'function') {
+        customRender(sec, images);
+        return sec;
       }
     
-      case 3: {
-        if (images.length) sec.appendChild(buildScreenshotRows(images, 150));
-        break;
+      // title
+      const h2 = document.createElement('h2');
+      h2.textContent = title;
+      sec.appendChild(h2);
+    
+      // lead
+      if (lead){
+        const p = document.createElement('p');
+        p.className = 'lead';
+        p.innerHTML = lead;
+        sec.appendChild(p);
       }
     
-      case 8: {
-        if (hero) sec.appendChild(buildFoodMosaic(images, hero));
-        break;
-      }
+      // Reason #2 split layout (Spotify + lyrics + gif on left, gallery on right)
+      if (songSplit){
+        const split = document.createElement('div');
+        split.className = 'split';
     
-      case 10: {
-        const img = document.createElement('img');
-        img.src = 'assets/kisses.png';
-        img.alt = 'Kisses collage';
-        img.className = 'hero-image';
-        img.loading = 'lazy';
-        img.addEventListener('click', ()=> openLightbox(img.src));
-        sec.appendChild(img);
-        break;
-      }
+        const left = document.createElement('div');
+        if (spotify){
+          const frame = document.createElement('iframe');
+          frame.className = 'spotify-embed';
+          frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+          frame.loading = 'lazy';
+          frame.src = spotify;
+          left.classList.add('spotify-card');
+          left.appendChild(frame);
+        }
+        if (lyrics){
+          const l = document.createElement('div');
+          l.className = 'lyrics';
+          l.textContent = lyrics;
+          left.appendChild(l);
+        }
+        if (tenorPostId){
+          const wrap = document.createElement('div');
+          wrap.className = 'tenor-wrap';
+          wrap.innerHTML = `
+            <div class="tenor-gif-embed"
+                 data-postid="${tenorPostId}"
+                 data-share-method="host"
+                 data-aspect-ratio="1.34454"
+                 data-width="100%"></div>`;
+          left.appendChild(wrap);
+          ensureTenor();
+        }
     
-      case 11: {
-        if (images.length) {
+        const right = document.createElement('div');
+        if (images.length){
           const gal = document.createElement('div');
           gal.className = 'gallery';
           images.forEach(src=>{
@@ -601,29 +624,105 @@
             img.addEventListener('click', ()=> openLightbox(src));
             gal.appendChild(img);
           });
-          sec.appendChild(gal);
+          right.appendChild(gal);
         }
-        break;
+    
+        split.appendChild(left);
+        split.appendChild(right);
+        sec.appendChild(split);
+        return sec; // done with split layout
       }
     
-      default: {
-        if (images.length) {
-          const gal = document.createElement('div');
-          gal.className = 'gallery';
-          images.forEach(src=>{
-            const img = document.createElement('img');
-            img.loading = 'lazy';
-            img.alt = 'photo';
-            img.src = src;
-            img.onerror = () => img.remove();
-            img.addEventListener('click', ()=> openLightbox(src));
-            gal.appendChild(img);
-          });
-          sec.appendChild(gal);
+      // optional Spotify (non-split)
+      if (spotify){
+        const frame = document.createElement('iframe');
+        frame.style.borderRadius = '12px';
+        frame.width = '100%';
+        frame.height = '152';
+        frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        frame.loading = 'lazy';
+        frame.src = spotify;
+        frame.title = 'Spotify player';
+        sec.appendChild(frame);
+      }
+    
+      // ---- Reason-specific rendering (robust: parse the number) ----
+      const m = title.match(/Reason\s+#?(\d+)/i);
+      const reasonNum = m ? parseInt(m[1], 10) : null;
+    
+      switch (reasonNum) {
+        case 1: { // big collage
+          const img = document.createElement('img');
+          img.src = 'assets/bestie.png';
+          img.alt = 'Te iubesc';
+          img.className = 'hero-image';
+          img.loading = 'lazy';
+          img.addEventListener('click', ()=> openLightbox(img.src));
+          sec.appendChild(img);
+          break;
+        }
+    
+        case 3: { // smaller readable screenshots
+          if (images.length) sec.appendChild(buildScreenshotRows(images, 150));
+          break;
+        }
+    
+        case 8: { // food mosaic with Naruto hero
+          if (hero) sec.appendChild(buildFoodMosaic(images, hero));
+          break;
+        }
+    
+        case 10: { // big collage for kisses
+          const img = document.createElement('img');
+          img.src = 'assets/kisses.png';
+          img.alt = 'Kisses collage';
+          img.className = 'hero-image';
+          img.loading = 'lazy';
+          img.addEventListener('click', ()=> openLightbox(img.src));
+          sec.appendChild(img);
+          break;
+        }
+    
+        case 11: { // grid of music screenshots
+          if (images.length) {
+            const gal = document.createElement('div');
+            gal.className = 'gallery';
+            images.forEach(src=>{
+              const img = document.createElement('img');
+              img.loading = 'lazy';
+              img.alt = 'photo';
+              img.src = src;
+              img.onerror = () => img.remove();
+              img.addEventListener('click', ()=> openLightbox(src));
+              gal.appendChild(img);
+            });
+            sec.appendChild(gal);
+          }
+          break;
+        }
+    
+        default: { // fallback grid
+          if (images.length) {
+            const gal = document.createElement('div');
+            gal.className = 'gallery';
+            images.forEach(src=>{
+              const img = document.createElement('img');
+              img.loading = 'lazy';
+              img.alt = 'photo';
+              img.src = src;
+              img.onerror = () => img.remove();
+              img.addEventListener('click', ()=> openLightbox(src));
+              gal.appendChild(img);
+            });
+            sec.appendChild(gal);
+          }
         }
       }
+    
+      return sec;
     }
 
+    
 
     
      
