@@ -663,33 +663,9 @@ Mie mi-a mers taaaare 🫣♥️`,
       {
         title:`Reason #8 — Because he is the best chef!!!!!`,
         lead:`He always took the time to cook for us and he cooks the beeest food ever 🤤🤤🤤 Scumpete, nu glumesc când zic că a fost life-changing să trec de la blând, boring food la umami și arome mai complexe 😭 Mulțumesc că m-ai introdus la ramen, la steakuri bune, la fine dining, dar cel mai important — la cum pot să fac home-made food să nu mai fie așa plictisitoare. Thank you for opening up this world to me and for taking the time and effort to cook so much for us ♥️🥺 Te apreciez enorm.`,
+        hero: "assets/naruto.jpg",
         images: rangeFiles("ch", 1, 14, "jpg"),
-        customRender: (sec, images) => {
-          const layout = document.createElement('div');
-          layout.className = 'food-layout';
-      
-          const left = document.createElement('div');
-          left.className = 'food-left';
-          const right = document.createElement('div');
-          right.className = 'food-right';
-      
-          images.forEach((src, i) => {
-            const img = document.createElement('img');
-            img.src = src; img.loading = 'lazy';
-            img.onclick = ()=> openLightbox(src);
-            if (i % 2 === 0) left.appendChild(img);
-            else right.appendChild(img);
-          });
-      
-          const naruto = document.createElement('img');
-          naruto.src = 'assets/naruto.jpg';   // your Naruto pic
-          naruto.className = 'food-hero';
-      
-          layout.appendChild(left);
-          layout.appendChild(naruto);
-          layout.appendChild(right);
-          sec.appendChild(layout);
-        }
+        
       },
 
       { title:`Reason #9 — Because he always spoils me with flowers and snacks and gifts and makes me feel so loved`, lead:`Știi tu cum să mă topești… 🫣♥️`, images: rangeFiles("f", 1, 9, "jpg") },
