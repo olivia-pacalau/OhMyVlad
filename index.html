@@ -551,37 +551,36 @@
     }
 
     // Create each reason section
-    function makeReason({title, lead, images, spotify, songSplit, lyrics, tenorPostId, hero, customRender}){
-      // create the section root first so customRender can use it safely
+    function makeReason({
+      title, lead, images = [], spotify, songSplit, lyrics, tenorPostId, hero, customRender
+    }){
       const sec = document.createElement('section');
       sec.className = 'reason reveal';
     
-      // If a customRender is defined, run it and skip default rendering
+      // Allow full custom render and exit early
       if (typeof customRender === 'function') {
         customRender(sec, images);
         return sec;
       }
     
+      // Title
       const h2 = document.createElement('h2');
       h2.textContent = title;
       sec.appendChild(h2);
     
+      // Lead
       if (lead){
         const p = document.createElement('p');
         p.className = 'lead';
-        p.innerHTML = lead;   // keep HTML for <strong> line
+        p.innerHTML = lead;
         sec.appendChild(p);
-        
       }
-
     
-
-      // === SPECIAL SPLIT LAYOUT (Reason #2) ===
-      if (songSplit) {
+      // SPECIAL SPLIT (Reason #2)
+      if (songSplit){
         const split = document.createElement('div');
         split.className = 'split';
-      
-        // left: spotify + lyrics (+ optional Tenor)
+    
         const left = document.createElement('div');
         if (spotify){
           const frame = document.createElement('iframe');
@@ -610,13 +609,12 @@
           left.appendChild(wrap);
           ensureTenor();
         }
-      
-        // right: photo grid
+    
         const right = document.createElement('div');
-        if (images && images.length){
+        if (images.length){
           const gal = document.createElement('div');
           gal.className = 'gallery';
-          images.forEach(src => {
+          images.forEach(src=>{
             const img = document.createElement('img');
             img.loading = 'lazy';
             img.alt = 'photo';
@@ -627,14 +625,14 @@
           });
           right.appendChild(gal);
         }
-      
+    
         split.appendChild(left);
         split.appendChild(right);
         sec.appendChild(split);
-        return sec; // important — return here so the rest isn’t run
+        return sec; // done with split layout
       }
     
-      // === DEFAULT (non-split) REASONS ===
+      // OPTIONAL Spotify (non-split)
       if (spotify){
         const frame = document.createElement('iframe');
         frame.style.borderRadius = '12px';
@@ -647,42 +645,46 @@
         sec.appendChild(frame);
       }
     
-      if (images && images.length){
-        if (/Reason #1/.test(title)) {
+      // REASON-SPECIFIC RENDERING
+      if (/Reason #1/.test(title)) {
+        // Big collage hero
+        const img = document.createElement('img');
+        img.src = 'assets/bestie.png';
+        img.alt = 'Te iubesc';
+        img.className = 'hero-image';
+        img.loading = 'lazy';
+        img.addEventListener('click', ()=> openLightbox(img.src));
+        sec.appendChild(img);
+    
+      } else if (/Reason #3/.test(title) && images.length) {
+        sec.appendChild(buildScreenshotRows(images, 220));
+    
+      } else if (/Reason #11/.test(title) && images.length) {
+        sec.appendChild(buildTallStrip(images, 300));
+    
+      } else if (/Reason #8/.test(title) && hero) {
+        sec.appendChild(buildFoodMosaic(images, hero));
+    
+      } else if (images.length) {
+        // Default gallery
+        const gal = document.createElement('div');
+        gal.className = 'gallery';
+        images.forEach(src=>{
           const img = document.createElement('img');
-          img.src = 'assets/bestie.png';    // your collage file
-          img.alt = 'Te iubesc';
-          img.className = 'hero-image';
           img.loading = 'lazy';
-          img.addEventListener('click', ()=> openLightbox(img.src));
-          sec.appendChild(img);
-        }
-        } else if (/Reason #3/.test(title)) {
-          sec.appendChild(buildScreenshotRows(images, 220));
-        } else if (/Reason #11/.test(title)) {
-          sec.appendChild(buildTallStrip(images, 300));
-
-        } else if (/Reason #8/.test(title) && hero){
-          sec.appendChild(buildFoodMosaic(images, hero));
-        } else {
-          const gal = document.createElement('div');
-          gal.className = 'gallery';
-          images.forEach(src => {
-            const img = document.createElement('img');
-            img.loading = 'lazy';
-            img.alt = 'photo';
-            img.src = src;
-            img.onerror = () => img.remove();
-            img.addEventListener('click', ()=> openLightbox(src));
-            gal.appendChild(img);
-          });
-          sec.appendChild(gal);
-        }
+          img.alt = 'photo';
+          img.src = src;
+          img.onerror = () => img.remove();
+          img.addEventListener('click', ()=> openLightbox(src));
+          gal.appendChild(img);
+        });
+        sec.appendChild(gal);
       }
     
       return sec;
     }
 
+  
 
     
      
