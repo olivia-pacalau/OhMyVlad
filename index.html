@@ -658,10 +658,32 @@
     
       } else if (/Reason #3/.test(title) && images.length) {
         sec.appendChild(buildScreenshotRows(images, 220));
+        
+      } else if (/Reason #10/.test(title)) {
+        const img = document.createElement('img');
+        img.src = 'assets/kisses.png';   // your new collage
+        img.alt = 'Kisses collage';
+        img.className = 'hero-image';
+        img.loading = 'lazy';
+        img.addEventListener('click', () => openLightbox(img.src));
+        sec.appendChild(img);
+
     
       } else if (/Reason #11/.test(title) && images.length) {
-        sec.appendChild(buildTallStrip(images, 300));
-    
+        const gal = document.createElement('div');
+        gal.className = 'gallery';
+        images.forEach(src => {
+          const img = document.createElement('img');
+          img.loading = 'lazy';
+          img.alt = 'photo';
+          img.src = src;
+          img.onerror = () => img.remove();
+          img.addEventListener('click', () => openLightbox(src));
+          gal.appendChild(img);
+        });
+        sec.appendChild(gal);
+      }
+
       } else if (/Reason #8/.test(title) && hero) {
         sec.appendChild(buildFoodMosaic(images, hero));
     
