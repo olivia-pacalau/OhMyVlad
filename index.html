@@ -289,6 +289,41 @@
       .food-mosaic .hero{ grid-column:1 / -1; height:260px; }
     }
 
+    /* Reason #8: Naruto hero layout */
+    .food-layout {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr; /* left / naruto / right */
+      gap: 14px;
+      align-items: start;
+    }
+    
+    .food-left, .food-right {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .food-left img, .food-right img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--ring);
+      background: #0c0d16;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .food-left img:hover, .food-right img:hover {
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 0 10px 22px rgba(96,165,250,.20);
+    }
+    
+    .food-hero {
+      max-width: 320px;   /* Naruto size */
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--ring);
+    }
+
 
   </style>
 </head>
@@ -457,6 +492,12 @@
 
     // Create each reason section
     function makeReason({title, lead, images, spotify, songSplit, lyrics, tenorPostId, hero}){
+      // If a customRender is defined, run it and skip default rendering
+      if (typeof arguments[0].customRender === 'function') {
+        arguments[0].customRender(sec, arguments[0].images);
+        return sec;
+      }
+
       const sec = document.createElement('section');
       sec.className = 'reason reveal';
     
@@ -620,12 +661,36 @@ Mie mi-a mers taaaare 🫣♥️`,
       { title:`Reason #7 — Because he is relentless in showing me love`, lead:`Luptă pentru noi chiar și în cele mai grele momente, când se trezește ego-ul meu încăpățânat. Nu voi lua asta niciodată de-a gata.`, images:[] },
       {
         title:`Reason #8 — Because he is the best chef!!!!!`,
-        lead:`He always took the time to cook for us and he cooks the beeest food ever 🤤🤤🤤
-Scumpete, nu glumesc când zic că a fost life-changing să trec de la blând, boring food la umami și arome mai complexe 😭 Mulțumesc că m-ai introdus la ramen, la steakuri bune, la fine dining, dar cel mai important — la cum pot să fac home-made food să nu mai fie așa plictisitoare.
-Thank you for opening up this world to me and for taking the time and effort to cook so much for us ♥️🥺 Te apreciez enorm.`,
-        hero: "assets/naruto.jpg",
-        images: rangeFiles("ch", 1, 17, "jpg")
-      },
+        lead:`He always took the time to cook for us and he cooks the beeest food ever 🤤🤤🤤 Scumpete, nu glumesc când zic că a fost life-changing să trec de la blând, boring food la umami și arome mai complexe 😭 Mulțumesc că m-ai introdus la ramen, la steakuri bune, la fine dining, dar cel mai important — la cum pot să fac home-made food să nu mai fie așa plictisitoare. Thank you for opening up this world to me and for taking the time and effort to cook so much for us ♥️🥺 Te apreciez enorm.`,
+        images: rangeFiles("ch", 1, 14, "jpg"),
+        customRender: (sec, images) => {
+          const layout = document.createElement('div');
+          layout.className = 'food-layout';
+      
+          const left = document.createElement('div');
+          left.className = 'food-left';
+          const right = document.createElement('div');
+          right.className = 'food-right';
+      
+          images.forEach((src, i) => {
+            const img = document.createElement('img');
+            img.src = src; img.loading = 'lazy';
+            img.onclick = ()=> openLightbox(src);
+            if (i % 2 === 0) left.appendChild(img);
+            else right.appendChild(img);
+          });
+      
+          const naruto = document.createElement('img');
+          naruto.src = 'assets/naruto.jpg';   // your Naruto pic
+          naruto.className = 'food-hero';
+      
+          layout.appendChild(left);
+          layout.appendChild(naruto);
+          layout.appendChild(right);
+          sec.appendChild(layout);
+        }
+      }
+
       { title:`Reason #9 — Because he always spoils me with flowers and snacks and gifts and makes me feel so loved`, lead:`Știi tu cum să mă topești… 🫣♥️`, images: rangeFiles("f", 1, 9, "jpg") },
       { title:`Reason #10 — Because he has the best taste in music and always shares his findings with me ♥️`, lead:`From “I'm Into You” by Chet Faker to “Тени от пальм”, my Spotify got so much more diverse and so much better. I think Ruby Waters could be my top artist for 2025 and I wouldn’t have known her if it wasn’t for you 😁♥️`, images:[] },
       { title:`Reason #11 — Because he is a hopeless romantic`, lead:`With him, love feels like the kind you read about in books — tender, poetic, a little dramatic in the best way. He turns ordinary days into little love stories, and even the smallest gestures feel like pages from our own novel. 🥺♥️`, images:[] }
