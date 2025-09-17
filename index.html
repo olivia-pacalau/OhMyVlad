@@ -570,45 +570,45 @@
         sec.appendChild(split);
         return sec; // important — return here so the rest isn’t run
       }
-
-        // === DEFAULT (non-split) REASONS ===
-        if (spotify){
-          const frame = document.createElement('iframe');
-          frame.style.borderRadius = '12px';
-          frame.width = '100%';
-          frame.height = '152';
-          frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-          frame.loading = 'lazy';
-          frame.src = spotify;
-          frame.title = 'Spotify player';
-          sec.appendChild(frame);
-        }
-      
-        if (images && images.length){
-          if (/Reason #1/.test(title)) {
-            sec.appendChild(buildQuiltGallery(images));
-          } else if (/Reason #3/.test(title)) {
-            sec.appendChild(buildScreenshotRows(images, 220));
-          } else if (/Reason #8/.test(title) && hero){
-            sec.appendChild(buildFoodMosaic(images, hero));
-          } else {
-            const gal = document.createElement('div');
-            gal.className = 'gallery';
-            images.forEach(src => {
-              const img = document.createElement('img');
-              img.loading = 'lazy';
-              img.alt = 'photo';
-              img.src = src;
-              img.onerror = () => img.remove();
-              img.addEventListener('click', ()=> openLightbox(src));
-              gal.appendChild(img);
-            });
-            sec.appendChild(gal);
-          }
-        }
-      
-        return sec;
+    
+      // === DEFAULT (non-split) REASONS ===
+      if (spotify){
+        const frame = document.createElement('iframe');
+        frame.style.borderRadius = '12px';
+        frame.width = '100%';
+        frame.height = '152';
+        frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        frame.loading = 'lazy';
+        frame.src = spotify;
+        frame.title = 'Spotify player';
+        sec.appendChild(frame);
       }
+    
+      if (images && images.length){
+        if (/Reason #1/.test(title)) {
+          sec.appendChild(buildQuiltGallery(images));
+        } else if (/Reason #3/.test(title)) {
+          sec.appendChild(buildScreenshotRows(images, 220));
+        } else if (/Reason #8/.test(title) && hero){
+          sec.appendChild(buildFoodMosaic(images, hero));
+        } else {
+          const gal = document.createElement('div');
+          gal.className = 'gallery';
+          images.forEach(src => {
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.alt = 'photo';
+            img.src = src;
+            img.onerror = () => img.remove();
+            img.addEventListener('click', ()=> openLightbox(src));
+            gal.appendChild(img);
+          });
+          sec.appendChild(gal);
+        }
+      }
+    
+      return sec;
+    }
 
 
     
