@@ -557,7 +557,7 @@
       const sec = document.createElement('section');
       sec.className = 'reason reveal';
     
-      // Allow full custom render and exit early
+      // Custom renderer escape hatch
       if (typeof customRender === 'function') {
         customRender(sec, images);
         return sec;
@@ -576,7 +576,7 @@
         sec.appendChild(p);
       }
     
-      // SPECIAL SPLIT (Reason #2)
+      // Reason #2 split layout
       if (songSplit){
         const split = document.createElement('div');
         split.className = 'split';
@@ -629,10 +629,10 @@
         split.appendChild(left);
         split.appendChild(right);
         sec.appendChild(split);
-        return sec; // done with split layout
+        return sec;
       }
     
-      // OPTIONAL Spotify (non-split)
+      // Optional Spotify (non-split)
       if (spotify){
         const frame = document.createElement('iframe');
         frame.style.borderRadius = '12px';
@@ -645,9 +645,8 @@
         sec.appendChild(frame);
       }
     
-      // REASON-SPECIFIC RENDERING
+      // Reason-specific rendering
       if (/Reason #1/.test(title)) {
-        // Big collage hero
         const img = document.createElement('img');
         img.src = 'assets/bestie.png';
         img.alt = 'Te iubesc';
@@ -656,19 +655,17 @@
         img.addEventListener('click', ()=> openLightbox(img.src));
         sec.appendChild(img);
     
-      } else if (/Reason #3/.test(title) && images.length) {
-        sec.appendChild(buildScreenshotRows(images, 150));
-      }
-        
-        else if (/Reason #10/.test(title)) {
+      } else if (/Reason #10/.test(title)) {
         const img = document.createElement('img');
-        img.src = 'assets/kisses.png';   // your new collage
+        img.src = 'assets/kisses.png';
         img.alt = 'Kisses collage';
         img.className = 'hero-image';
         img.loading = 'lazy';
         img.addEventListener('click', () => openLightbox(img.src));
         sec.appendChild(img);
-
+    
+      } else if (/Reason #3/.test(title) && images.length) {
+        sec.appendChild(buildScreenshotRows(images, 150)); // smaller
     
       } else if (/Reason #11/.test(title) && images.length) {
         const gal = document.createElement('div');
@@ -683,8 +680,7 @@
           gal.appendChild(img);
         });
         sec.appendChild(gal);
-      }
-
+    
       } else if (/Reason #8/.test(title) && hero) {
         sec.appendChild(buildFoodMosaic(images, hero));
     
@@ -706,6 +702,8 @@
     
       return sec;
     }
+
+    
 
   
 
