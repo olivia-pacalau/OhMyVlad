@@ -249,6 +249,46 @@
     @media (max-width:600px){
       .shot{ height:170px; } /* smaller on phones */
     }
+    /* Reason #8 center-hero food mosaic */
+    .food-mosaic{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:10px;
+    }
+    .food-mosaic .tile{
+      border:1px solid var(--ring);
+      border-radius:12px;
+      overflow:hidden;
+      background:#0c0d16;
+      height:180px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      cursor:pointer;
+    }
+    .food-mosaic .tile:hover{
+      transform:translateY(-2px) scale(1.015);
+      box-shadow:0 10px 22px rgba(96,165,250,.20);
+    }
+    .food-mosaic .tile img{
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    
+    /* the big Naruto hero in the middle */
+    .food-mosaic .hero{
+      grid-column:4 / span 6;   /* centered on 12-col grid */
+      grid-row:span 2;
+      height:380px;
+    }
+    
+    /* responsive */
+    @media (max-width:1100px){
+      .food-mosaic{ grid-template-columns:repeat(8,1fr); }
+      .food-mosaic .hero{ grid-column:2 / span 6; height:340px; }
+    }
+    @media (max-width:700px){
+      .food-mosaic{ grid-template-columns:repeat(6,1fr); }
+      .food-mosaic .hero{ grid-column:1 / -1; height:260px; }
+    }
+
 
   </style>
 </head>
@@ -290,6 +330,38 @@
   <div class="lightbox" id="lb"><img alt="zoomed" /></div>
 
   <script>
+
+    function buildFoodMosaic(images, heroSrc){
+      const grid = document.createElement('div');
+      grid.className = 'food-mosaic';
+    
+      // Hero first (Naruto)
+      const hero = document.createElement('div');
+      hero.className = 'tile hero';
+      const hImg = document.createElement('img');
+      hImg.src = heroSrc; hImg.alt = 'Naruto ramen hero';
+      hImg.loading = 'lazy';
+      hImg.onerror = () => hero.remove();
+      hImg.addEventListener('click', ()=> openLightbox(heroSrc));
+      hero.appendChild(hImg);
+      grid.appendChild(hero);
+    
+      // Surrounding food tiles
+      images.forEach(src=>{
+        const t = document.createElement('div');
+        t.className = 'tile';
+        const img = document.createElement('img');
+        img.src = src; img.alt = 'food';
+        img.loading = 'lazy';
+        img.onerror = () => t.remove();
+        img.addEventListener('click', ()=> openLightbox(src));
+        t.appendChild(img);
+        grid.appendChild(t);
+      });
+    
+      return grid;
+    }
+
 
     // Build a readable screenshot row grid (no cropping)
     function buildScreenshotRows(images, rowHeight=220){
@@ -384,7 +456,7 @@
     }
 
     // Create each reason section
-    function makeReason({title, lead, images, spotify, songSplit, lyrics, tenorPostId}){
+    function makeReason({title, lead, images, spotify, songSplit, lyrics, tenorPostId, hero}){
       const sec = document.createElement('section');
       sec.className = 'reason reveal';
     
@@ -475,10 +547,12 @@
     
       if (images && images.length){
         if (/Reason #1/.test(title)) {
-          // Use the new quilt collage for Reason #1
           sec.appendChild(buildQuiltGallery(images));
+        } else if (/Reason #3/.test(title)) {
+          sec.appendChild(buildScreenshotRows(images, 220));
+        } else if (/Reason #8/.test(title) && hero){         // ← new
+          sec.appendChild(buildFoodMosaic(images, hero));     // ← new
         } else {
-          // Standard grid for others
           const gal = document.createElement('div');
           gal.className = 'gallery';
           images.forEach(src => {
@@ -493,6 +567,7 @@
           sec.appendChild(gal);
         }
       }
+
     
       return sec;
     }
@@ -548,6 +623,7 @@ Mie mi-a mers taaaare 🫣♥️`,
         lead:`He always took the time to cook for us and he cooks the beeest food ever 🤤🤤🤤
 Scumpete, nu glumesc când zic că a fost life-changing să trec de la blând, boring food la umami și arome mai complexe 😭 Mulțumesc că m-ai introdus la ramen, la steakuri bune, la fine dining, dar cel mai important — la cum pot să fac home-made food să nu mai fie așa plictisitoare.
 Thank you for opening up this world to me and for taking the time and effort to cook so much for us ♥️🥺 Te apreciez enorm.`,
+        hero: "assets/naruto.jpg",
         images: rangeFiles("ch", 1, 17, "jpg")
       },
       { title:`Reason #9 — Because he always spoils me with flowers and snacks and gifts and makes me feel so loved`, lead:`Știi tu cum să mă topești… 🫣♥️`, images: rangeFiles("f", 1, 9, "jpg") },
