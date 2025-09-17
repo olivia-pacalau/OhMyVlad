@@ -150,6 +150,32 @@
 
     .reveal{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease}
     .reveal.show{opacity:1; transform:none}
+
+    /* Reason #2 split layout: 35% / 65% */
+    .split {
+      display: grid;
+      grid-template-columns: 35% 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; }
+    }
+    
+    /* Spotify + lyrics block */
+    .spotify-card iframe {
+      width: 100%;
+      height: 232px;          /* try 152 or 300 if you want shorter/taller */
+      border-radius: 12px;
+    }
+    .lyrics {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.45;
+      white-space: pre-line;   /* keeps your line breaks */
+      color: var(--muted);
+    }
+
   </style>
 </head>
 <body>
@@ -213,31 +239,105 @@
       }); return wrap;
     }
 
-    function makeReason({title, lead, images, spotify}){
-      const sec=document.createElement('section'); sec.className='reason reveal';
-      const h2=document.createElement('h2'); h2.textContent=title; sec.appendChild(h2);
-      if(lead){const p=document.createElement('p'); p.className='lead'; p.textContent=lead; sec.appendChild(p);}
-      if(spotify){
-        const frame=document.createElement('iframe');
-        frame.style.borderRadius='12px'; frame.width='100%'; frame.height='152';
-        frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-        frame.loading='lazy'; frame.src=spotify;
+   
+    function makeReason({title, lead, images, spotify, songSplit, lyrics}){
+      const sec = document.createElement('section');
+      sec.className = 'reason reveal';
+    
+      const h2 = document.createElement('h2');
+      h2.textContent = title;
+      sec.appendChild(h2);
+    
+      if (lead){
+        const p = document.createElement('p');
+        p.className = 'lead';
+        p.textContent = lead;
+        sec.appendChild(p);
+      }
+    
+      // --- Special split layout (Spotify + lyrics left, photos right)
+      if (songSplit) {
+        const split = document.createElement('div');
+        split.className = 'split';
+    
+        // left column: spotify + lyrics
+        const left = document.createElement('div');
+        if (spotify){
+          const frame = document.createElement('iframe');
+          frame.className = 'spotify-embed';
+          frame.style.border = 'none';
+          frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+          frame.loading = 'lazy';
+          frame.src = spotify;
+          left.classList.add('spotify-card');
+          left.appendChild(frame);
+        }
+        if (lyrics){
+          const l = document.createElement('div');
+          l.className = 'lyrics';
+          l.textContent = lyrics;
+          left.appendChild(l);
+        }
+
+    // right column: photos
+        const right = document.createElement('div');
+        if (images && images.length){
+          const gal = document.createElement('div');
+          gal.className = 'gallery';
+          images.forEach(src => {
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.alt = 'photo';
+            img.src = src;
+            img.onerror = () => img.remove();
+            img.addEventListener('click', ()=> openLightbox(src));
+            gal.appendChild(img);
+          });
+          right.appendChild(gal);
+        }
+    
+        split.appendChild(left);
+        split.appendChild(right);
+        sec.appendChild(split);
+        return sec;
+      }
+  
+    // --- Default behavior for non-split reasons
+      if (spotify){
+        const frame = document.createElement('iframe');
+        frame.style.borderRadius = '12px';
+        frame.width = '100%';
+        frame.height = '152';
+        frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        frame.loading = 'lazy';
+        frame.src = spotify;
+        frame.title = 'Spotify player';
         sec.appendChild(frame);
       }
-      if(images&&images.length){
-        if(/Reason #1/.test(title)){ sec.appendChild(buildQuirkyGallery(images)); }
-        else{
-          const gal=document.createElement('div'); gal.className='gallery';
-          images.forEach(src=>{
-            const img=document.createElement('img'); img.src=src; img.loading='lazy'; img.alt='photo';
-            img.onerror=()=>img.remove(); img.addEventListener('click',()=>openLightbox(src));
+    
+      if (images && images.length){
+        // scrapbook for Reason #1, grid for others (unchanged)
+        if (/Reason #1/.test(title)) {
+          sec.appendChild(buildQuirkyGallery(images));
+        } else {
+          const gal = document.createElement('div');
+          gal.className = 'gallery';
+          images.forEach(src => {
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.alt = 'photo';
+            img.src = src;
+            img.onerror = () => img.remove();
+            img.addEventListener('click', ()=> openLightbox(src));
             gal.appendChild(img);
           });
           sec.appendChild(gal);
         }
       }
+    
       return sec;
     }
+
 
     const lb=document.getElementById('lb'); const lbImg=lb.querySelector('img');
     function openLightbox(src){ lbImg.src=src; lb.classList.add('show'); }
@@ -253,12 +353,19 @@
 <strong>Mulțumesc, scumpetea mea ♥️ Viața e mai ușoară când mă ții de mână.</strong>`,
        images: rangeFiles("b",1,22,"jpg").filter(src =>
        !/b(7|8|21)\.jpg$/.test(src))},
-      {title:`Reason #2 — Because he is the hottest 😋`,
-       lead:`(Self explanatory — just look at the pictures 😋)
-Ești cel mai frumos, Vlad, mă topesc în ochii tăi sincer. Dar când te dezbraci… mmmmm 🤤 mi se face foame scriind…`,
-       spotify:"https://open.spotify.com/embed/track/2CRq9NKMcGyIH0wjmYOy0H?utm_source=generator",
-       images: rangeFiles("b",1,22,"jpg").filter(src =>
-       !/b(7|8|21)\.jpg$/.test(src))},
+      {
+      title: `Reason #2 — Because he is the hottest 😋`,
+      lead: `(Self explanatory — just look at the pictures 😋)
+    Ești cel mai frumos, Vlad, mă topesc în ochii tăi sincer. Dar când te dezbraci… mmmmm 🤤 mi se face foame scriind…`,
+      spotify: "https://open.spotify.com/embed/track/2CRq9NKMcGyIH0wjmYOy0H?utm_source=generator",
+      songSplit: true,
+      lyrics: `Come over for a swim inside of me
+    I just want you to tell me what to do
+    I know I've been up and down lately
+    But right now I just wanna go down on you`,
+      images: rangeFiles("h", 1, 9, "jpg")
+      },
+
 
       {title:`Reason #3 — Because he is the most supportive boyfriend ever`,
        lead:`Simt că pot înfrunta munți când simt că te am alături și că o să mă susții mereu cu o încurajare, o cuprinzică sau un brainstorming session ♥️`,images:[]},
