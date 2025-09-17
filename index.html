@@ -172,6 +172,56 @@
       margin: 10px auto 0;
       border-radius: 12px;
     }
+
+        /* Quilt collage for Reason #1 */
+    .quilt{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+    .pola{
+      position:relative;
+      background:#fff;
+      color:#0b0b12;
+      border-radius:10px;
+      padding:6px 6px 12px;
+      box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 6px 18px rgba(0,0,0,.35);
+      transform: rotate(var(--rot, 0deg));
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .pola:hover{
+      transform: rotate(0deg) translateY(-2px) scale(1.02);
+      box-shadow:0 14px 28px rgba(96,165,250,.25);
+    }
+    .pola img{
+      width:100%; height:100%; display:block;
+      border-radius:6px; object-fit:cover;
+    }
+    .pola figcaption{
+      margin-top:6px; font-size:11px; opacity:.7;
+      text-align:center; color:#333;
+    }
+    /* sizes */
+    .pola.s { grid-column: span 3; height:160px; }
+    .pola.m { grid-column: span 4; height:200px; }
+    .pola.l { grid-column: span 5; height:240px; }
+    /* cute tape */
+    .pola::before{
+      content:"";
+      position:absolute; left:50%; top:-6px; transform:translateX(-50%);
+      width:56px; height:12px; border-radius:3px; opacity:.9;
+      background: var(--tape, linear-gradient(90deg, #a78bfa88, #60a5fa88));
+    }
+    /* responsive */
+    @media (max-width:1100px){
+      .pola.s { grid-column: span 4; height:160px; }
+      .pola.m { grid-column: span 6; height:200px; }
+      .pola.l { grid-column: span 8; height:220px; }
+    }
+    @media (max-width:700px){
+      .pola.s, .pola.m, .pola.l { grid-column: span 12; height:210px; }
+    }
+
   </style>
 </head>
 <body>
@@ -212,6 +262,43 @@
   <div class="lightbox" id="lb"><img alt="zoomed" /></div>
 
   <script>
+
+    function buildQuiltGallery(images){
+      const quilt = document.createElement('div');
+      quilt.className = 'quilt';
+    
+      const tapes = [
+        'linear-gradient(90deg,#a78bfa88,#60a5fa88)',
+        'linear-gradient(90deg,#60a5fa88,#a78bfa88)',
+        'linear-gradient(90deg,#f0abfc88,#60a5fa88)'
+      ];
+      const sizes = ['s','m','l','s','m','s'];
+    
+      images.forEach((src, i) => {
+        const fig = document.createElement('figure');
+        fig.className = `pola ${sizes[Math.floor(Math.random()*sizes.length)]}`;
+    
+        // gentle tilt
+        const r = (Math.random()<0.45) ? 0 : (Math.random()*4 - 2);
+        fig.style.setProperty('--rot', r.toFixed(2)+'deg');
+    
+        // tape variant
+        fig.style.setProperty('--tape', tapes[i % tapes.length]);
+    
+        const img = document.createElement('img');
+        img.src = src; img.loading = 'lazy'; img.alt = 'photo';
+        img.onerror = () => fig.remove();
+        img.addEventListener('click', ()=> openLightbox(src));
+    
+        const cap = document.createElement('figcaption'); cap.textContent = '♥';
+    
+        fig.appendChild(img); fig.appendChild(cap);
+        quilt.appendChild(fig);
+      });
+    
+      return quilt;
+    }
+
     // Build utilities
     function rangeFiles(prefix, start, end, ext="jpg"){
       const out=[]; for(let i=start;i<=end;i++) out.push(`assets/${prefix}${i}.${ext}`); return out;
@@ -249,24 +336,24 @@
     function makeReason({title, lead, images, spotify, songSplit, lyrics, tenorPostId}){
       const sec = document.createElement('section');
       sec.className = 'reason reveal';
-
+    
       const h2 = document.createElement('h2');
       h2.textContent = title;
       sec.appendChild(h2);
-
+    
       if (lead){
         const p = document.createElement('p');
         p.className = 'lead';
-        p.innerHTML = lead;       // allow <strong> in Reason #1
+        p.innerHTML = lead;   // keep HTML for <strong> line
         sec.appendChild(p);
       }
-
-      // Special split layout (Spotify + lyrics [+ Tenor GIF]) on left, photos on right
+    
+      // === SPECIAL SPLIT LAYOUT (Reason #2) ===
       if (songSplit) {
         const split = document.createElement('div');
         split.className = 'split';
-
-        // Left column
+    
+        // left: spotify + lyrics (+ optional Tenor)
         const left = document.createElement('div');
         if (spotify){
           const frame = document.createElement('iframe');
@@ -295,8 +382,8 @@
           left.appendChild(wrap);
           ensureTenor();
         }
-
-        // Right column: grid of photos
+    
+        // right: photo grid
         const right = document.createElement('div');
         if (images && images.length){
           const gal = document.createElement('div');
@@ -312,14 +399,14 @@
           });
           right.appendChild(gal);
         }
-
+    
         split.appendChild(left);
         split.appendChild(right);
         sec.appendChild(split);
-        return sec;
+        return sec;  // IMPORTANT: exits here, so quilt change below doesn't run
       }
-
-      // Default behavior for other reasons
+    
+      // === DEFAULT (non-split) REASONS ===
       if (spotify){
         const frame = document.createElement('iframe');
         frame.style.borderRadius = '12px';
@@ -331,11 +418,13 @@
         frame.title = 'Spotify player';
         sec.appendChild(frame);
       }
-
+    
       if (images && images.length){
         if (/Reason #1/.test(title)) {
-          sec.appendChild(buildQuirkyGallery(images));
+          // Use the new quilt collage for Reason #1
+          sec.appendChild(buildQuiltGallery(images));
         } else {
+          // Standard grid for others
           const gal = document.createElement('div');
           gal.className = 'gallery';
           images.forEach(src => {
@@ -350,9 +439,10 @@
           sec.appendChild(gal);
         }
       }
-
+    
       return sec;
     }
+
 
     // Lightbox
     const lb=document.getElementById('lb'); const lbImg=lb.querySelector('img');
