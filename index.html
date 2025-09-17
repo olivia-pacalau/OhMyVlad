@@ -64,6 +64,22 @@
     }
     @media (max-width:640px){ .gallery img{height:140px} }
 
+    /* Happy birthday & closing note blocks */
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px; padding:26px;
+    }
+    .closing{
+      background:linear-gradient(180deg, rgba(96,165,250,.10), rgba(167,139,250,.06));
+      border:1px solid rgba(96,165,250,.30);
+    }
+    .closing h2{
+      margin-top:0;
+      background:linear-gradient(90deg,var(--purple),var(--blue));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+
     footer{padding:26px 0 60px; text-align:center; color:var(--muted); font-size:14px}
   </style>
 </head>
@@ -71,20 +87,16 @@
   <div class="wrap">
     <header>
       <h1>Why Vlad Is The Best Person Ever</h1>
-      <p class="subtitle">
-        Ești cel mai bun, scumpetea mea. Nu mi-ar ajunge timp să enumăr toate motivele de ce ești un suflet așa
-        prețios, dar am să încerc aici măcar câteva să le împărtășesc cu tine.
-      </p>
+      
     </header>
 
     <!-- Scrollable reasons -->
     <main class="sections" id="reasons-sections"></main>
 
-    <!-- Happy Birthday block at the end -->
+    <!-- Happy Birthday block (kept near the end as you wanted) -->
     <section class="intro" style="margin:80px 0;">
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center;">
-        <div style="background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
-                    border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:26px;">
+        <div class="panel">
           <h2 style="margin-top:0;">La mulți ani fericit, scumpetea mea</h2>
           <p>I built this little website because… (write your heartfelt paragraph here — why he’s the best person ever, what you’re grateful for, and what you wish for him this year).</p>
         </div>
@@ -95,10 +107,38 @@
       </div>
     </section>
 
-    <footer>Te iubesc! · OhMyVlad v5.0</footer>
+    <!-- Final closing note (this appears LAST) -->
+    <section class="panel closing" style="margin:40px 0 10px;">
+      <h2>One last thing… ♥️</h2>
+      <p>
+        I have written 12 reasons here due to time constraints but if I was a monkey infinitely typing on a typewriter I would still need 1 billion years to count all the reasons why you are such a precious and wholesome person who I am lucky to call my best friend ♥️
+      </p>
+      <p>
+        With this said, today is the day we celebrate you, my love ♥️ I wish for you all the best this silly little life has to offer — a lot of laughter, a lot of love and a lot of peace and bliss (or what they call <em>a sweet sublime</em> ;))
+      </p>
+      <p>
+        Îți doresc să ai cât mai mult timp pentru suflețelul tău — timp cu oamenii dragi, timp pentru scris poezii, timp pentru ascultat muzică la boxă ♥️
+      </p>
+      <p>
+        I wish you lots of luck for facing life head on. I know you’ve got this, and I will always be here by your side ♥️
+      </p>
+      <p>
+        Twenty seven might seem like a scary number, but I’m sure the key is to take care of the smol Vlad inside of you so that the 27 adult can thrive ♥️ I will do my best to take care of your inner kid just as much.
+      </p>
+      <p>
+        I hope that as years go by you will grow to be excited for this day at least a little bit as much as me ♥️♥️♥️
+      </p>
+      <p>
+        La mulți ani, scumpetea mea! ♥️ <br/>
+        Te iubesc total ♥️♥️♥️
+      </p>
+    </section>
+
+    <footer>Te iubesc! · OhMyVlad v5.1</footer>
   </div>
 
   <script>
+    // helpers
     function rangeFiles(prefix, start, end, ext="jpg"){
       const out = [];
       for(let i=start;i<=end;i++) out.push(`assets/${prefix}${i}.${ext}`);
@@ -133,6 +173,7 @@
       return sec;
     }
 
+    // exactly 11 reasons (your texts)
     const reasons = [
       {
         title: `Reason #1 — Because he has been the bestest friend to me. ♥️`,
@@ -194,12 +235,7 @@ Thank you for opening up this world to me and for taking the time and effort to 
         title: `Reason #11 — Because he is a hopeless romantic`,
         lead: `With him, love feels like the kind you read about in books — tender, poetic, a little dramatic in the best way. He turns ordinary days into little love stories, and even the smallest gestures feel like pages from our own novel. 🥺♥️`,
         images: []
-      },
-      { title: `Reason #12`, lead: `(text aici)`, images: [] },
-      { title: `Reason #13`, lead: `(text aici)`, images: [] },
-      { title: `Reason #14`, lead: `(text aici)`, images: [] },
-      { title: `Reason #15`, lead: `(text aici)`, images: [] },
-      { title: `Reason #16`, lead: `(text aici)`, images: [] }
+      }
     ];
 
     const root = document.getElementById('reasons-sections');
