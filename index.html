@@ -91,27 +91,42 @@
       break-inside:avoid;
       display:inline-block;
       width:100%;
+      max-width:var(--w,200px);   /* variable width per card */
       margin:0 0 14px;
       background:#fff;
       color:#0b0b12;
       border-radius:10px;
-      padding:8px 8px 16px;
-      box-shadow:0 0 0 1px rgba(255,255,255,.05),0 8px 28px rgba(0,0,0,.35);
+      padding:6px 6px 12px;
+      box-shadow:0 0 0 1px rgba(255,255,255,.05),0 6px 18px rgba(0,0,0,.35);
       transform:rotate(var(--rot,0deg));
       transition:transform .18s ease, box-shadow .18s ease;
       position:relative;
     }
-    .polaroid:hover{transform:rotate(0deg) translateY(-2px) scale(1.01); box-shadow:0 16px 36px rgba(96,165,250,.25);}
-    .polaroid img{width:100%; border-radius:6px; display:block;}
-    .polaroid figcaption{margin-top:8px; font-size:12px; opacity:.8; text-align:center; color:#333;}
+    .polaroid:hover{
+      transform:rotate(0deg) translateY(-2px) scale(1.03);
+      box-shadow:0 14px 28px rgba(96,165,250,.25);
+    }
+    .polaroid img{
+      width:100%;
+      border-radius:6px;
+      display:block;
+    }
+    .polaroid figcaption{
+      margin-top:6px;
+      font-size:11px;
+      opacity:.7;
+      text-align:center;
+      color:#333;
+    }
     .polaroid::before{
       content:"";
-      position:absolute; left:50%; top:-8px;
+      position:absolute; left:50%; top:-6px;
       transform:translateX(-50%);
-      width:64px; height:16px;
+      width:48px; height:12px;
       background:linear-gradient(90deg, rgba(167,139,250,.5), rgba(96,165,250,.5));
-      border-radius:4px; opacity:.8;
+      border-radius:3px; opacity:.8;
     }
+
 
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
@@ -183,8 +198,14 @@
       const wrap=document.createElement('div'); wrap.className='masonry';
       images.forEach(src=>{
         const fig=document.createElement('figure'); fig.className='polaroid';
+        // Random tiny tilt
         const r=(Math.random()<0.35)?0:(Math.random()*8-4);
         fig.style.setProperty('--rot', r.toFixed(2)+'deg');
+        
+        // Random width between 160–220px
+        const w = 160 + Math.floor(Math.random()*60);
+        fig.style.setProperty('--w', w+'px');
+
         const img=document.createElement('img'); img.src=src; img.loading='lazy'; img.alt='photo';
         img.onerror=()=>fig.remove(); img.addEventListener('click',()=>openLightbox(src));
         const cap=document.createElement('figcaption'); cap.textContent='♥';
